@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+}
+
+div#container {
+  display: block;
+  width: 800px;
+  margin: 2em auto;
+  border: 1px dashed #333;
+}
+
+div#header {
+  display: block;
+  height: 150px;
+  background-image: url('../images/JD-Logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div#navbar {
+  padding: 10px 15px;
+  background-color: #3a3;
+  display: block;
+}
+
+div#content {
+  padding: 15px;
+}
+
+div#footer {
+  text-align: center;
+}
+
+a {
+  color: blue;
+  outline: none;
+  text-decoration: underline;
+}
+
+a:hover {
+}
+
+p {
+  margin: 0 0 18px
+}
+
+img {
+  border: none;
+}

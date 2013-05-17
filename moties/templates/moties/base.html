@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="nl">
+    <head>
+        <meta charset="utf-8">
+    <title>{% block title %}Politieke moties Jonge Democraten{% endblock %}</title>
+    <link rel="stylesheet" media="all" href="{% static 'moties/css/style.css' %}" type="text/css">
+  </head>
+  <body>
+    <div id="container">
+        <div id="header">{% block header %}{% endblock %}</div>
+
+        <div id="navbar">{% block navbar %}{% endblock %}</div>
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="footer">(C) 2013 Jonge Democraten</div>
+    </div>
+  </body>
+</html>
+
+

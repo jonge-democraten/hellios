@@ -1,0 +1,15 @@
+{% extends 'moties/base.html' %}
+
+{% block navbar %}
+<a href="{% url 'moties:index' %}">Begin</a> &gt; {{motie.titel }}
+{% endblock %}
+
+{% block content %}
+<h1>Motie {{ motie.titel }}</h1>
+<p>{{ status|safe }}</p>
+<p>
+Ingediend door <strong>{{ motie.indiener }}</strong> op {{ motie.indiendatum}}.
+</p>
+
+{{motie.content|linebreaks}}
+{% endblock content %}
