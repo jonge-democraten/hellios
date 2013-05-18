@@ -1,0 +1,20 @@
+{% extends 'moties/base.html' %}
+{% block content %} 
+   <h2><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a> ({{status|safe}})</h2>
+   <p>
+     <strong>Tags:</strong> 
+{% for tag in tags %}
+<a href="{% url 'moties:tag' tag.kort %}">{{tag.kort}}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% else %}.{% endif %}
+{% endfor %}
+{% if motie.hoofdstuk %}<br /><strong>Bij politieke programma:</strong> <a href="#">{{ motie.hoofdstuk}}</a>{% endif %}
+   </p>
+   <div class="pol_motie">{{ content|safe }}</div>
+   <p>
+{% if has_notulen %}
+     <strong>&raquo; <a href="{{ motie.congres.notulen }}">Ga naar de notulen</a></strong><br />
+{% endif %}
+     <strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
+     <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong><br />
+     <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+   </p>
+{% endblock %}

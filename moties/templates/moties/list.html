@@ -1,0 +1,25 @@
+{% extends 'moties/base.html' %}
+{% block content %}
+{% block list-header %}<h2><a href="{% url 'moties:motie-list' %}">Alle moties</a></h2>{% endblock %}
+
+<p><strong>Sorteer</strong> op <a href="{{ base_url }}?order=datum">motiedatum</a>, <a href="{{ base_url }}?order=congres">congresdatum</a> of <a href="{{ base_url }}?order=titel">titel</a>.</p>
+
+<ul>
+  {% for motie in moties %}
+  <li>
+  {{ motie.congres.kort }} - <a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
+  </li>
+  {% endfor %}
+  </ul>
+
+{% load digg_paginator %}
+{% digg_paginator base_url %}
+
+{% block links-bottom %}
+  <p>
+    <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong><br />
+    <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+  </p>
+{% endblock %}
+
+{% endblock %}

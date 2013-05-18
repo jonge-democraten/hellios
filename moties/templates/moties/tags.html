@@ -1,0 +1,13 @@
+{% extends 'moties/base.html' %}
+{% block content %}
+{% block list-header %}<h2><a href="{% url 'moties:motie-list' %}">Alle tags</a></h2>{% endblock %}
+
+{% for tag in tags %}
+<a href="{% url 'moties:tag' tag=tag.kort %}">{{ tag.kort }}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% endif %}{% endfor %}
+
+<p>
+  <strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
+  <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+</p>
+
+{% endblock %}

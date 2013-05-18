@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 {% load staticfiles %}
 <html lang="nl">
-    <head>
-        <meta charset="utf-8">
-    <title>{% block title %}Politieke moties Jonge Democraten{% endblock %}</title>
-    <link rel="stylesheet" media="all" href="{% static 'moties/css/style.css' %}" type="text/css">
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %}JD Politiek{% endblock %}</title>
+    <link rel="stylesheet" href="http://jongedemocraten.nl/templates/jd/css/template.css">
+    <link rel="stylesheet" href="{% static 'moties/css/paginator.css' %}">
+    <style>
+      .container { width: 605px; margin: 30px auto; }
+      .pol_motie { background: #ebebeb; padding: 10px; font-size: 12px; line-height: 16px; }
+    </style>
   </head>
   <body>
-    <div id="container">
-        <div id="header">{% block header %}{% endblock %}</div>
-
-        <div id="navbar">{% block navbar %}{% endblock %}</div>
-        <div id="content">{% block content %}{% endblock %}</div>
-        <div id="footer">(C) 2013 Jonge Democraten</div>
+    <div class="container">
+      <div id="homeDiv">
+      {% block logo %}<img src="{% static 'moties/images/JD-Logo.png' %}" border="0" />{% endblock %}
+      {% block content %}{% endblock %}
+      </div>
     </div>
   </body>
 </html>
-
-

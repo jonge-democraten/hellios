@@ -1,29 +1,35 @@
-from django.db import models
+from django.db.models import *
 import datetime
 
-class Congres(models.Model):
-    naam = models.CharField(max_length=250)
-    datum = models.DateField()
-    plaats = models.CharField(max_length=250)
+class Congres(Model):
+    naam = CharField(max_length=250, unique=True, verbose_name='Naam')
+    datum = DateField()
+    #plaats = CharField(max_length=250)
+    inleiding = CharField(max_length=250, verbose_name='Inleiding van motie')
+    notulen = CharField(max_length=250, blank=True, verbose_name='Link naar notulen')
+    kort = CharField(max_length=250, verbose_name='Afkorting in motielijsten', unique=True)
+
+    class Meta:
+        ordering = ('datum',)
 
     def __unicode__(self):
         return "Congres %s" % self.naam
     
-class Hoofdstuk(models.Model):
-    naam = models.CharField(max_length=250)
-    nummer = models.IntegerField()    
+class Hoofdstuk(Model):
+    naam = CharField(max_length=250, unique=True)
+    nummer = IntegerField(unique=True)    
     
     def __unicode__(self):
         return "Hoofdstuk %d: %s" % (self.nummer, self.naam)
     
-class Tag(models.Model):
-    kort = models.CharField(max_length=40)
-    lang = models.CharField(max_length=140)
+class Tag(Model):
+    kort = CharField(max_length=40, primary_key=True, verbose_name='Tag')
+    lang = CharField(max_length=250, verbose_name='Beschrijving', blank=True)
 
     def __unicode__(self):
         return self.kort
     
-class Motie(models.Model):
+class Motie(Model):
     INGEDIEND = "IN"
     GOEDGEKEURD = "GO"
     CONGRES = "CO"
@@ -39,16 +45,20 @@ class Motie(models.Model):
         (AANGENOMEN, 'Aangenomen'),
         (UITGESTELD, 'Uitgesteld'))
     
-    titel = models.CharField(max_length=250)
-    content = models.TextField()
-    status = models.CharField(max_length=2, choices=STATUS_CHOICES, default=INGEDIEND)
-    indiener = models.CharField(max_length=140)
-    woordvoerder = models.CharField(max_length=40, verbose_name="Woordvoerder")
-    congres = models.ForeignKey(Congres, null=True, blank=True, verbose_name="Congres")
-    indiendatum = models.DateField(verbose_name="Datum waarop de motie is ingediend")
-    hoofdstuk = models.ForeignKey(Hoofdstuk, null=True, blank=True, verbose_name="Hoofdstuk uit het politieke programma")
-    tags = models.ManyToManyField(Tag, blank=True)
-    datum = models.DateField(verbose_name="Datum")
+    titel = CharField(max_length=250)
+    constateringen = TextField(blank=True)
+    overwegingen = TextField(blank=True)
+    uitspraken = TextField(blank=True)
+    toelichting = TextField(blank=True)
+    content = TextField(blank=True, verbose_name="Custom content (override, kan HTML aan)")
+    status = CharField(max_length=2, choices=STATUS_CHOICES, default=INGEDIEND)
+    indiener = CharField(max_length=250, blank=True, verbose_name="Indiener(s)")
+    woordvoerder = CharField(max_length=40, blank=True, verbose_name="Woordvoerder")
+    congres = ForeignKey(Congres, null=True, blank=True, verbose_name="Congres")
+    indiendatum = DateField(verbose_name="Datum waarop de motie is ingediend")
+    hoofdstuk = ForeignKey(Hoofdstuk, null=True, blank=True, verbose_name="Hoofdstuk uit het politieke programma")
+    tags = ManyToManyField(Tag, blank=True)
+    datum = DateField(verbose_name="Datum")
 
     class Meta:
         ordering = ('datum',)
@@ -67,3 +77,8 @@ class Motie(models.Model):
         else:
             self.datum = self.indiendatum
         super(Motie, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        from django.template import defaultfilters
+        from django.core.urlresolvers import reverse
+        return reverse('moties:motie', kwargs={'slug': defaultfilters.slugify(self.titel), 'pk': self.pk})

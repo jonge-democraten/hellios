@@ -1,0 +1,108 @@
+<html>
+ <head>
+  <title>JD Politiek</title>
+  <link rel="stylesheet" href="http://jongedemocraten.nl/templates/jd/css/template.css">
+  <style>
+   .container { width: 605px; margin: 30px auto; }
+   
+   .pol_search { background: #ebebeb; padding: 10px 20px; }
+   .pol_search h3 { background-color: #578439; background-image: url('https://jongedemocraten.nl/templates/jd/images/TitleBackground.png'); background-repeat: repeat-x; color: white; font-size: 14px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; margin: 0; vertical-align: middle; }
+   .pol_search .input { padding: 5px; width: 450px; font-size: 14px; }
+   .pol_search .submit { padding: 5px; font-size: 14px; font-weight: bold; background: #89b136; color: #fff; border: 1px solid #73952d; }
+   .pol_search span { margin-left: 20px; }
+   
+   .pol_tabel { margin-top: 20px; }
+   .pol_tabel td { padding: 0px 10px; }
+   .pol_tabel .pol_alfabet { width: 150px; }
+   .pol_tabel .pol_alfabet a { background: #ebebeb; display: block; float: left; margin: 5px; text-align: center; color: #000; width: 20px; height: 20px; line-height: 20px; }
+
+   .pol_tags { width: 150px; font-size: 12px; }
+
+  </style>
+ </head>
+ <body>
+ <div class="container">
+  <div id="homeDiv">
+   <h2><a href="#">Politieke visie &amp; standpunten</a></h2>
+   <p><strong>De politieke visie van de Jonge Democraten is uitgewerkt in het politiek programma. Dit programma wordt aangevuld door politiek-inhoudelijke moties. Snel een standpunt opzoeken? Dat kan door middel van de alfabetische standpuntenlijst of de zoekmachine.</strong></p>
+
+   <!-- begin zoekbox -->
+   <div class="pol_search">
+    <form method="post" action="#">
+    <h3>Standpunten zoeken</h3>
+    <p><input class="input" type="text" name="query"> <input class="submit" type="submit" value="zoek"></p>
+    <p><strong>Doorzoek:</strong> <span><input type="checkbox" checked="checked"> Politiek Programma</span> <span><input type="checkbox" checked="checked"> Politieke Moties</span>  <span><input type="checkbox" checked="checked"> Alfabetische Standpuntenlijst</span></p>
+   </div>
+   <!-- eind zoekbox -->
+
+
+   <table class="pol_tabel" width="605" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+     <td valign="top">
+     
+      <!-- start politiek programma -->
+		  <p><strong>Politiek Programma</strong></p>
+		  <p><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho1.html">1. Beginselen der Jonge Democraten</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho2.html">2. Democratie &amp; Openbaar Bestuur</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho3.html">3. Onderwijs</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho4.html">4. Economie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho5.html">5. Kunst, Cultuur en Media</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho6.html">6. Diversiteit &amp; Participatie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho7.html">7. Volksgezondheid</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho8.html">8. Milieu &amp; Energie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho9.html">9. Mobiliteit &amp; Ruimtelijke Ordening</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho10.html">10. Justitie &amp; Veiligheid</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho11.html">11. Buitenlandse Zaken</a></p>
+      <p><strong>&raquo; <a href="#">Download Politiek Programma</a></strong></p>
+      <!-- eind politiek programma -->
+      
+     </td>
+		 <td valign="top" style="border-left: 1px solid #dbdbdb; border-right: 1px solid #dbdbdb;">
+      
+      <!-- start standpuntenlijst -->
+		  <p><strong>Alfabetische standpuntenlijst</strong></p>
+		  <div class="pol_alfabet">
+		   <a href="#">A</a>
+			 <a href="#">B</a>
+			 <a href="#">C</a>
+			 <a href="#">D</a>
+			 <a href="#">E</a>
+			 <a href="#">F</a>
+			 <a href="#">G</a>
+			 <a href="#">H</a>
+			 <a href="#">I</a>
+			 <a href="#">J</a>
+			 <a href="#">K</a>
+			 <a href="#">L</a>
+			 <a href="#">M</a>
+			 <a href="#">N</a>
+			 <a href="#">O</a>
+			 <a href="#">P</a>
+			 <a href="#">Q</a>
+			 <a href="#">R</a>
+			 <a href="#">S</a>
+			 <a href="#">T</a>
+			 <a href="#">U</a>
+			 <a href="#">V</a>
+			 <a href="#">W</a>
+			 <a href="#">X</a>
+			 <a href="#">Y</a>
+			 <a href="#">Z</a>
+		  </div>
+		  <!-- eind standpuntenlijst -->
+		  
+		  
+	   </td>
+		 <td valign="top">
+		 
+		  <!-- start moties -->
+		  <p><strong>Politieke Moties</strong></p>
+		  <p><i>Veelgebruikte tags:</i></p>
+		  <div class="pol_tags">
+{% for tag in tags %}
+<a href="{% url 'moties:tag' tag=tag.kort %}">{{ tag.kort }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}
+      </div>
+      <p><strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
+     <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong></p>
+		  <!-- eind moties -->
+		  
+		  
+	   </td>
+    </tr>
+   </table>
+   
+   
+  </div>
+ </div>
+ </body>
+</html>

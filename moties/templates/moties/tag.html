@@ -1,0 +1,9 @@
+{% extends 'moties/list.html' %}
+{% block list-header %}<h2><a href="{% url 'moties:tag' tag=tag %}">Moties met de tag '{{ tag }}'</a></h2>{% endblock %}
+{% block links-bottom %}
+  <p>
+    <strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
+    <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong><br />
+    <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+  </p>
+{% endblock %}
