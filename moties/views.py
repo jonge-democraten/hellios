@@ -1,100 +1,145 @@
-from moties.models import Motie, Tag
+from moties.models import Motie, Tag, Comment
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, FormView, View
+from django.views.generic.detail import SingleObjectMixin
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.shortcuts import render_to_response
+from moties.forms import CommentForm
+
 from re import sub
 
+def has_notulen(motie):
+    if motie.congres == None:
+        return False
+    if motie.congres.notulen == None:
+        return False
+    return len(motie.congres.notulen.strip()) > 0
+
+def get_congres(motie):
+    congres = motie.congres
+    if congres != None:
+        return congres.naam
+    else:
+        return "--"
+
+def get_congres_inleiding(motie):
+    congres = motie.congres
+    if congres != None:
+        return congres.inleiding
+    else:
+        return "De JD,"
+
+def get_status(motie):
+    if motie.status == Motie.INGEDIEND:
+        return "<strong>ingediend</strong>"
+    elif motie.status == Motie.CONGRES:
+        return "<strong>in congresboek</strong>: %s" % get_congres(motie)
+    elif motie.status == Motie.GOEDGEKEURD:
+        return "<strong>goedgekeurd ter behandeling</strong>"
+    elif motie.status == Motie.VERWORPEN:
+        return "<strong>verworpen</strong>"
+    elif motie.status == Motie.AANGENOMEN:
+        return "<strong>aangenomen</strong>: %s" % get_congres(motie)
+    elif motie.status == Motie.UITGESTELD:
+        return "<strong>aangehouden</strong>."
+
+def to_br_list(str):
+    if str == None: return []
+    # strip whole block
+    str = str.strip()
+    # strip all lines
+    str = "\n".join([s.strip() for s in str.split("\n")])
+    # replace single newlines by <br />
+    str = sub("(?<!\n)(\n)(?!\n)", "<br />", str)
+    # convert to list and remove empty lines
+    str = [s for s in str.split("\n") if len(s)]
+    return str
+
+def to_p(str):
+    if str == None: return ""
+    str = str.strip()
+    str = "\n".join([s.strip() for s in str.split("\n")])
+    str = sub("(?<!\n)(\n)(?!\n)", "<br />", str)
+    str = [s for s in str.split("\n") if len(s)]
+    if len(str) == 0: return ""
+    return "<p>" + "</p><p>".join(str) + "</p>"
+
+def get_content(motie):
+    if len(motie.content.strip()) > 0:
+        return motie.content.strip()
+
+    inleiding = get_congres_inleiding(motie)
+    con = to_br_list(motie.constateringen)
+    over = to_br_list(motie.overwegingen)
+    uit = to_br_list(motie.uitspraken)
+    toe = to_p(motie.toelichting)
+
+    inleiding = "<p><em>" + inleiding + "</em></p>"
+    con = len(con) and ("<p><strong>constaterende dat</strong></p><ul><li>" + "</li><li>".join(con) + "</li></ul>") or ""
+    over = len(over) and ("<p><strong>overwegende dat</strong></p><ul><li>" + "</li><li>".join(over) + "</li></ul>") or ""
+    uit = len(uit) and ("<p><strong>spreekt uit dat</strong></p><ul><li>" + "</li><li>".join(uit) + "</li></ul>") or ""
+    toe = len(toe) and ("<p><strong>Toelichting:</strong></p>" + toe) or ""
+    orde = "<p><em>en gaat over tot de orde van de dag.</em></p>"
+
+    return inleiding + con + over + uit + orde + toe
+
 class MotieFullView(DetailView):
+    template_name = 'moties/motie.html'
     context_object_name = "motie"
     model = Motie
 
-    def has_notulen(self, motie):
-        if motie.congres == None:
-            return False
-        if motie.congres.notulen == None:
-            return False
-        return len(motie.congres.notulen.strip()) > 0
-
-    def get_congres(self, motie):
-        congres = motie.congres
-        if congres != None:
-            return congres.naam
-        else:
-            return "--"
-
-    def get_congres_inleiding(self, motie):
-        congres = motie.congres
-        if congres != None:
-            return congres.inleiding
-        else:
-            return "De JD,"
-
-    def get_status(self, motie):
-        if motie.status == Motie.INGEDIEND:
-            return "<strong>ingediend</strong>"
-        elif motie.status == Motie.CONGRES:
-            return "<strong>in congresboek</strong>: %s" % self.get_congres(motie)
-        elif motie.status == Motie.GOEDGEKEURD:
-            return "<strong>goedgekeurd ter behandeling</strong>"
-        elif motie.status == Motie.VERWORPEN:
-            return "<strong>verworpen</strong>"
-        elif motie.status == Motie.AANGENOMEN:
-            return "<strong>aangenomen</strong>: %s" % self.get_congres(motie)
-        elif motie.status == Motie.UITGESTELD:
-            return "<strong>aangehouden</strong>."
-
-    def to_br_list(self, str):
-        if str == None: return []
-        # strip whole block
-        str = str.strip()
-        # strip all lines
-        str = "\n".join([s.strip() for s in str.split("\n")])
-        # replace single newlines by <br />
-        str = sub("(?<!\n)(\n)(?!\n)", "<br />", str)
-        # convert to list and remove empty lines
-        str = [s for s in str.split("\n") if len(s)]
-        return str
-
-    def to_p(self, str):
-        if str == None: return ""
-        str = str.strip()
-        str = "\n".join([s.strip() for s in str.split("\n")])
-        str = sub("(?<!\n)(\n)(?!\n)", "<br />", str)
-        str = [s for s in str.split("\n") if len(s)]
-        if len(str) == 0: return ""
-        return "<p>" + "</p><p>".join(str) + "</p>"
-
-    def get_content(self, motie):
-        if len(motie.content.strip()) > 0:
-            return motie.content.strip()
-
-        inleiding = self.get_congres_inleiding(motie)
-        con = self.to_br_list(motie.constateringen)
-        over = self.to_br_list(motie.overwegingen)
-        uit = self.to_br_list(motie.uitspraken)
-        toe = self.to_p(motie.toelichting)
-
-        inleiding = "<p><em>" + inleiding + "</em></p>"
-        con = len(con) and ("<p><strong>constaterende dat</strong></p><ul><li>" + "</li><li>".join(con) + "</li></ul>") or ""
-        over = len(over) and ("<p><strong>overwegende dat</strong></p><ul><li>" + "</li><li>".join(over) + "</li></ul>") or ""
-        uit = len(uit) and ("<p><strong>spreekt uit dat</strong></p><ul><li>" + "</li><li>".join(uit) + "</li></ul>") or ""
-        toe = len(toe) and ("<p><strong>Toelichting:</strong></p>" + toe) or ""
-        orde = "<p><em>en gaat over tot de orde van de dag.</em></p>"
-
-        return inleiding + con + over + uit + orde + toe
-
     def get_context_data(self, **kwargs):
         context = super(MotieFullView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        motie = context[self.context_object_name]
-        context['status'] = self.get_status(motie)
-        context['content'] = self.get_content(motie)
+        motie = context['motie']
+        context['status'] = get_status(motie)
+        context['content'] = get_content(motie)
         context['tags'] = Tag.objects.annotate(num_moties=Count('motie')).order_by('-num_moties', 'kort').filter(motie__id__exact=motie.id)
-        context['has_notulen'] = self.has_notulen(motie)
+        context['has_notulen'] = has_notulen(motie)
+        context['has_comments'] = motie.comments.count() > 0
+        context['comment_form'] = CommentForm()
         return context
+
+class CommentView(SingleObjectMixin, FormView):
+    template_name = 'moties/motie.html'
+    context_object_name = "motie"
+    form_class = CommentForm
+    model = Motie
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentView, self).get_context_data(**kwargs)
+        motie = context['motie']
+        context['status'] = get_status(motie)
+        context['content'] = get_content(motie)
+        context['tags'] = Tag.objects.annotate(num_moties=Count('motie')).order_by('-num_moties', 'kort').filter(motie__id__exact=motie.id)
+        context['has_notulen'] = has_notulen(motie)
+        context['has_comments'] = motie.comments.count() > 0
+        context['comment_form'] = self.form
+        return context
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def form_invalid(self, form):
+        self.object = self.get_object()
+        self.form = form
+        return super(CommentView, self).form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = self.get_object()
+        comment = Comment(motie=self.object, tekst=form.cleaned_data['tekst'], auteur=form.cleaned_data['author'], email=form.cleaned_data['email'])
+        comment.save()
+        return super(CommentView, self).form_valid(form)
+
+class MotieView(View):
+    def get(self, request, *args, **kwargs):
+        view = MotieFullView.as_view()
+        return view(request, *args, **kwargs);
+
+    def post(self, request, *args, **kwargs):
+        view = CommentView.as_view()
+        return view(request, *args, **kwargs);
 
 class FilterMixin(object):
     def get_queryset_filters(self):

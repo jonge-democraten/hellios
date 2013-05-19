@@ -14,13 +14,7 @@ urlpatterns = patterns('moties.views',
     url(r'^list/$', MotieListView.as_view(), name='motie-list'),
     url(r'^tag/(?P<tag>[- \w\d]+)/$', TagView.as_view(), name='tag'),
     url(r'^tags/$', TagListView.as_view(), name='tag-list'),
-    url(r'^motie/(?P<pk>\d+)/$',
-        MotieFullView.as_view(
-            model=Motie,
-            template_name='moties/motie.html')),
-    url(r'^motie/(?P<pk>\d+)/(?P<slug>[-\w\d]*)/$',
-        MotieFullView.as_view(
-            model=Motie,
-            template_name='moties/motie.html'), name='motie'),
+    url(r'^motie/(?P<pk>\d+)/$', MotieView.as_view()),
+    url(r'^motie/(?P<pk>\d+)/(?P<slug>[-\w\d]*)/$', MotieView.as_view(), name='motie'),
     # url(r'^search/', include('haystack.urls')),
 )

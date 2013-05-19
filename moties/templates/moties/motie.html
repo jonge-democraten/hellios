@@ -9,6 +9,47 @@
 {% if motie.hoofdstuk %}<br /><strong>Bij politieke programma:</strong> <a href="#">{{ motie.hoofdstuk}}</a>{% endif %}
    </p>
    <div class="pol_motie">{{ content|safe }}</div>
+
+{# COMMENT FORM #}
+
+<p>
+<form action="{{ motie.get_absolute_url }}" method="post">{% csrf_token %}
+<fieldset>
+<div><p>Als er iets niet klopt aan de motie (bijvoorbeeld als er een tag ontbreekt), laat dit dan weten aan de beheerder!</p></div>
+{{ comment_form.non_field_errors }}
+<div>
+{{ comment_form.author.errors }}
+{{ comment_form.author.label_tag }} 
+{{ comment_form.author }}
+</div>
+<div>
+{{ comment_form.email.errors }}
+{{ comment_form.email.label_tag }}
+{{ comment_form.email }}
+</div>
+<div>
+{{ comment_form.controleveld.errors }}
+{{ comment_form.controleveld.label_tag }}
+{{ comment_form.controleveld }}
+</div>
+<div>
+{{ comment_form.tekst.errors }}
+{{ comment_form.tekst.label_tag }}
+{{ comment_form.tekst }}
+</div>
+<button class="button" type="submit">Verzenden</button>
+{% if has_comments %}
+<div><p><strong>Openstaande opmerkingen:</strong></p></div>
+{% for comment in motie.comments.all %}
+<div><p>{{ comment.tekst }}</p></div>
+{% endfor %}
+{% endif %}
+</fieldset>
+</form>
+</p>
+
+
+
    <p>
 {% if has_notulen %}
      <strong>&raquo; <a href="{{ motie.congres.notulen }}">Ga naar de notulen</a></strong><br />
