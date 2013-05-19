@@ -153,9 +153,9 @@ def view_home(request):
     return render_to_response("moties/home.html", {'tags': tags})
 
 
-from rest_framework import viewsets
-from moties.serializers import MotieSerializer
+# from rest_framework import viewsets
+# from moties.serializers import MotieSerializer
 
-class MotieViewSet(viewsets.ModelViewSet):
-    queryset = Motie.objects.all()
-    serializer_class = MotieSerializer
+# class MotieViewSet(viewsets.ModelViewSet):
+#     queryset = Motie.objects.all()
+#     serializer_class = MotieSerializer

@@ -3,7 +3,7 @@ from django.views.generic import DetailView, ListView
 from moties.models import Motie
 from moties.views import *
 from moties import views
-from rest_framework import routers
+# from rest_framework import routers
 
 #router = routers.DefaultRouter()
 #router.register(r'moties', views.MotieViewSet)
@@ -22,5 +22,5 @@ urlpatterns = patterns('moties.views',
         MotieFullView.as_view(
             model=Motie,
             template_name='moties/motie.html'), name='motie'),
-    url(r'^search/', include('haystack.urls')),
+    # url(r'^search/', include('haystack.urls')),
 )

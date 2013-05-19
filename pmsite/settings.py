@@ -128,17 +128,17 @@ INSTALLED_APPS = (
     #'rest_framework',
     'south',
     'gunicorn',
-    'haystack',
+    #'haystack',
 )
 
-import os
+# import os
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
-    },
-}
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+#         'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+#     },
+# }
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

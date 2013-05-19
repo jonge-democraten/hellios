@@ -1,4 +1,6 @@
 from django.db.models import *
+from django.template import defaultfilters
+from django.core.urlresolvers import reverse
 import datetime
 
 class Congres(Model):
@@ -79,6 +81,4 @@ class Motie(Model):
         super(Motie, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        from django.template import defaultfilters
-        from django.core.urlresolvers import reverse
         return reverse('moties:motie', kwargs={'slug': defaultfilters.slugify(self.titel), 'pk': self.pk})
