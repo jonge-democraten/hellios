@@ -1,6 +1,6 @@
 {% extends 'moties/base.html' %}
 {% block content %} 
-   <h2><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a> ({{status|safe}})</h2>
+   <h1><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a></h1><h2>({{status|safe}})</h2>
    <p>
      <strong>Tags:</strong> 
 {% for tag in tags %}

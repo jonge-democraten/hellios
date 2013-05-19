@@ -22,4 +22,5 @@ urlpatterns = patterns('moties.views',
         MotieFullView.as_view(
             model=Motie,
             template_name='moties/motie.html'), name='motie'),
+    url(r'^search/', include('haystack.urls')),
 )

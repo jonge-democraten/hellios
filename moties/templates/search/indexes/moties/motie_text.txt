@@ -1,0 +1,8 @@
+{{ object.titel }}
+{{ object.constateringen }}
+{{ object.uitspraken }}
+{{ object.toelichting }}
+{{ object.overwegingen }}
+{{ object.content }}
+{{ object.indiener }}
+{{ object.woordvoerder }}

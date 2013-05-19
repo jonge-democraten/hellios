@@ -1,8 +1,8 @@
 {% extends 'moties/base.html' %}
 {% block content %}
-{% block list-header %}<h2><a href="{% url 'moties:motie-list' %}">Alle moties</a></h2>{% endblock %}
+{% block list-header %}<h1><a href="{% url 'moties:motie-list' %}">Alle moties</a></h1>{% endblock %}
 
-<p><strong>Sorteer</strong> op <a href="{{ base_url }}?order=datum">motiedatum</a>, <a href="{{ base_url }}?order=congres">congresdatum</a> of <a href="{{ base_url }}?order=titel">titel</a>.</p>
+<p><strong>Sorteer</strong> op <a href="{{ base_url }}?order=congres">congresdatum</a> of <a href="{{ base_url }}?order=titel">titel</a>.</p>
 
 <ul>
   {% for motie in moties %}

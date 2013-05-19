@@ -23,7 +23,7 @@ class Hoofdstuk(Model):
         return "Hoofdstuk %d: %s" % (self.nummer, self.naam)
     
 class Tag(Model):
-    kort = CharField(max_length=40, primary_key=True, verbose_name='Tag')
+    kort = CharField(db_index=True, max_length=40, primary_key=True, verbose_name='Tag')
     lang = CharField(max_length=250, verbose_name='Beschrijving', blank=True)
 
     def __unicode__(self):
@@ -45,20 +45,20 @@ class Motie(Model):
         (AANGENOMEN, 'Aangenomen'),
         (UITGESTELD, 'Uitgesteld'))
     
-    titel = CharField(max_length=250)
+    titel = CharField(max_length=250, db_index=True)
     constateringen = TextField(blank=True)
     overwegingen = TextField(blank=True)
     uitspraken = TextField(blank=True)
     toelichting = TextField(blank=True)
     content = TextField(blank=True, verbose_name="Custom content (override, kan HTML aan)")
-    status = CharField(max_length=2, choices=STATUS_CHOICES, default=INGEDIEND)
+    status = CharField(max_length=2, db_index=True, choices=STATUS_CHOICES, default=INGEDIEND)
     indiener = CharField(max_length=250, blank=True, verbose_name="Indiener(s)")
     woordvoerder = CharField(max_length=40, blank=True, verbose_name="Woordvoerder")
     congres = ForeignKey(Congres, null=True, blank=True, verbose_name="Congres")
     indiendatum = DateField(verbose_name="Datum waarop de motie is ingediend")
     hoofdstuk = ForeignKey(Hoofdstuk, null=True, blank=True, verbose_name="Hoofdstuk uit het politieke programma")
     tags = ManyToManyField(Tag, blank=True)
-    datum = DateField(verbose_name="Datum")
+    datum = DateField(verbose_name="Datum", db_index=True)
 
     class Meta:
         ordering = ('datum',)
