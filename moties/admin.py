@@ -21,7 +21,7 @@ class MotieAdmin(admin.ModelAdmin):
     list_filter = ['datum', 'congres', 'tags']
     search_fields = ['titel', 'content', 'woordvoerder', 'indiener']
     date_hierarchy = 'datum'
-    filter_vertical = ('tags',)
+    filter_horizontal = ('tags',)
 
 admin.site.register(Motie, MotieAdmin)
 admin.site.register(Tag)
