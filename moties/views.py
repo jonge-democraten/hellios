@@ -1,13 +1,11 @@
-from moties.models import Motie, Tag, Comment
-from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView, ListView, FormView, View
-from django.views.generic.detail import SingleObjectMixin
 from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Count
-from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404, render_to_response
+from django.views.generic import DetailView, ListView, FormView, View
+from django.views.generic.detail import SingleObjectMixin
 from moties.forms import CommentForm
-
+from moties.models import Motie, Tag, Comment
 from re import sub
 
 def has_notulen(motie):
@@ -34,16 +32,16 @@ def get_congres_inleiding(motie):
 def get_status(motie):
     if motie.status == Motie.INGEDIEND:
         return "<strong>ingediend</strong>"
-    elif motie.status == Motie.CONGRES:
-        return "<strong>in congresboek</strong>: %s" % get_congres(motie)
     elif motie.status == Motie.GOEDGEKEURD:
         return "<strong>goedgekeurd ter behandeling</strong>"
+    elif motie.status == Motie.CONGRES:
+        return "<strong>in congresboek</strong>: %s" % get_congres(motie)
     elif motie.status == Motie.VERWORPEN:
-        return "<strong>verworpen</strong>"
+        return "<strong>verworpen</strong>: %s" % get_congres(motie)
     elif motie.status == Motie.AANGENOMEN:
         return "<strong>aangenomen</strong>: %s" % get_congres(motie)
     elif motie.status == Motie.UITGESTELD:
-        return "<strong>aangehouden</strong>."
+        return "<strong>aangehouden</strong>: %s" % get_congres(motie)
 
 def to_br_list(str):
     if str == None: return []
