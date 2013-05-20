@@ -52,7 +52,7 @@ class Motie(Model):
     constateringen = TextField(blank=True, help_text='Gebruik een dubbele enter voor de volgende bullet')
     overwegingen = TextField(blank=True, help_text='Gebruik een dubbele enter voor de volgende bullet')
     uitspraken = TextField(blank=True, help_text='Gebruik een dubbele enter voor de volgende bullet')
-    toelichting = TextField(blank=True, help_text='Gebruik een dubbele enter voor de volgende bullet')
+    toelichting = TextField(blank=True, help_text='Gebruik een dubbele enter voor de volgende paragraaf')
     content = TextField(blank=True, verbose_name="Custom content (override, kan HTML aan)", help_text="Als dit veld gevuld is, worden de andere tekstvelden genegeerd. Let op dat dit veld unsafe gebruikt wordt: HTML wordt doorgegeven!")
     status = CharField(max_length=2, db_index=True, choices=STATUS_CHOICES, default=INGEDIEND)
     indiener = CharField(max_length=250, blank=True, verbose_name="Indiener(s)")
