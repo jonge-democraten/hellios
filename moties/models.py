@@ -3,6 +3,14 @@ from django.template import defaultfilters
 from django.core.urlresolvers import reverse
 import datetime
 
+class Standpunt(Model):
+    naam = CharField(max_length=250, verbose_name="Begrip", primary_key=True)
+    beschrijving = TextField(help_text="Gebruik dubbele enter voor nieuwe paragraaf")
+    letter = CharField(blank=True, max_length=1, verbose_name="Letter voor indexering", help_text="Wordt automatisch gegenereerd indien niet ingevuld")
+
+    def __unicode__(self):
+        return self.naam
+
 class Tag(Model):
     kort = CharField(db_index=True, max_length=40, primary_key=True, verbose_name='Tag')
     lang = CharField(max_length=250, verbose_name='Beschrijving', blank=True, help_text="Optionele beschrijving voor de admin")
