@@ -1,4 +1,5 @@
 {% extends 'moties/base.html' %}
+{% load moties_extra %}
 {% block content %}
 {% block list-header %}<h1><a href="{% url 'moties:motie-list' %}">Alle moties</a></h1>{% endblock %}
 
@@ -8,6 +9,11 @@
   {% for motie in moties %}
   <li>
   {{ motie.congres.kort }} - <a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
+  {{ motie|motie_status_list }}
+  {% if request.user.is_authenticated %} 
+    {% if motie.comments.count %} ({{motie.comments.count}} comments) {% endif %} 
+    <a href="{% url 'admin:moties_motie_change' motie.pk %}">(wijzigen)</a>
+  {% endif %}
   </li>
   {% endfor %}
   </ul>

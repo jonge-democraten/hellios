@@ -152,7 +152,7 @@ class FilterMixin(object):
               .filter(**self.get_queryset_filters())
 
 class MotieListView(FilterMixin, ListView):
-    queryset = Motie.objects.exclude(status__exact=Motie.INGEDIEND)
+    queryset = Motie.objects.all()
     context_object_name = 'moties'
     template_name = 'moties/list.html'
     paginate_by = 50000
@@ -161,6 +161,8 @@ class MotieListView(FilterMixin, ListView):
 
     def get_queryset(self):
         qs = super(MotieListView, self).get_queryset()
+        if not self.request.user.is_authenticated():
+            qs = qs.exclude(status__exact=Motie.INGEDIEND)
         if "order" in self.request.GET:
             if self.request.GET['order'] in self.allowed_sorts:
                 return qs.order_by(*self.allowed_sorts[self.request.GET['order']])
@@ -170,6 +172,7 @@ class MotieListView(FilterMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(MotieListView, self).get_context_data(**kwargs)
         context['base_url'] = self.request.path
+        context['request'] = self.request
         return context
 
 class TagView(MotieListView):
