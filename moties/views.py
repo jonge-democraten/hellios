@@ -97,6 +97,7 @@ class MotieFullView(DetailView):
         context['has_notulen'] = has_notulen(motie)
         context['has_comments'] = motie.comments.count() > 0
         context['comment_form'] = CommentForm()
+        context['request'] = self.request
         return context
 
 class CommentView(SingleObjectMixin, FormView):
@@ -114,6 +115,7 @@ class CommentView(SingleObjectMixin, FormView):
         context['has_notulen'] = has_notulen(motie)
         context['has_comments'] = motie.comments.count() > 0
         context['comment_form'] = self.form
+        context['request'] = self.request
         return context
 
     def get_success_url(self):
@@ -204,7 +206,7 @@ def view_home(request):
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
-    return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten})
+    return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
 
 # from rest_framework import viewsets
 # from moties.serializers import MotieSerializer
