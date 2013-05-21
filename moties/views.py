@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from moties.forms import CommentForm
-from moties.models import Motie, Tag, Comment
+from moties.models import Motie, Tag, Comment, Standpunt
 from re import sub
 
 def has_notulen(motie):
@@ -195,9 +195,16 @@ class TagListView(ListView):
     template_name = 'moties/tags.html'
 
 def view_home(request):
-    tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:12]
-    return render_to_response("moties/home.html", {'tags': tags})
+    tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:25]
+    letters = [chr(i) for i in xrange(ord('A'), ord('Z')+1)]
+    used = [item['letter'] for item in Standpunt.objects.values('letter').annotate(count=Count('letter')).filter(count__gt=0)]
+    #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
+    #letters = [(letter, 1) for letter in letters]
+    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used})
 
+def view_standpunten(request, letter, *args, **kwargs):
+    standpunten = Standpunt.objects.filter(letter__exact=letter)
+    return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten})
 
 # from rest_framework import viewsets
 # from moties.serializers import MotieSerializer

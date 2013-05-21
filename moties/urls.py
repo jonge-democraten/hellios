@@ -16,5 +16,6 @@ urlpatterns = patterns('moties.views',
     url(r'^tags/$', TagListView.as_view(), name='tag-list'),
     url(r'^motie/(?P<pk>\d+)/$', MotieView.as_view()),
     url(r'^motie/(?P<pk>\d+)/(?P<slug>[-\w\d]*)/$', MotieView.as_view(), name='motie'),
+    url(r'^standpunten/(?P<letter>[A-Z])/$', views.view_standpunten, name='standpunten'), 
     # url(r'^search/', include('haystack.urls')),
 )

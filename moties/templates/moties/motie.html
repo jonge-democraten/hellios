@@ -1,4 +1,5 @@
 {% extends 'moties/base.html' %}
+{% block title %}{{ motie.titel }} - Visie Jonge Democraten{% endblock %}
 {% block content %} 
    <h1><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a></h1><h2>({{status|safe}})</h2>
    <p>
@@ -6,7 +7,6 @@
 {% for tag in tags %}
 <a href="{% url 'moties:tag' tag.kort %}">{{tag.kort}}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% else %}.{% endif %}
 {% endfor %}
-{% if motie.hoofdstuk %}<br /><strong>Bij politieke programma:</strong> <a href="#">{{ motie.hoofdstuk}}</a>{% endif %}
    </p>
    <div class="pol_motie">{{ content|safe }}</div>
 

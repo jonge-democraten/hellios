@@ -15,6 +15,6 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^moties/', include('moties.urls', namespace='moties')),
+    url(r'', include('moties.urls', namespace='moties')),
     #url(r'^api-path/', include('rest_framework.urls', namespace='rest_framework'))
 )
