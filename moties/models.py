@@ -8,6 +8,13 @@ class Standpunt(Model):
     beschrijving = TextField(help_text="Gebruik dubbele enter voor nieuwe paragraaf")
     letter = CharField(blank=True, max_length=1, verbose_name="Letter voor indexering", help_text="Wordt automatisch gegenereerd indien niet ingevuld")
 
+    def save(self, *args, **kwargs):
+        if self.letter == None:
+            self.letter = self.naam[0].upper()
+        if len(self.letter) != 1:
+            self.letter = self.naam[0].upper()
+        super(Standpunt, self).save(*args, **kwargs)
+
     def __unicode__(self):
         return self.naam
 
