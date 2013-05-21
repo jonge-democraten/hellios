@@ -65,9 +65,6 @@ class Motie(Model):
     class Meta:
         ordering = ('datum',)
 
-    def update_datum(self):
-        self.datum = self.congres != None and self.congres.datum or self.indiendatum 
-
     def __unicode__(self):
         return self.titel
 
@@ -76,10 +73,14 @@ class Motie(Model):
             self.datum = self.congres.datum
         else:
             self.datum = self.indiendatum
+        super(Motie, self).save(*args, **kwargs)
+
+        # note: when editing in admin tag is removed (!)
         if self.congres != None:
             if self.congres.tag != None:
-                self.tags.add(self.congres.tag)
-        super(Motie, self).save(*args, **kwargs)
+                if self.tags.filter(pk=self.congres.tag.pk).count() == 0:
+                    self.tags.add(self.congres.tag)
+                    super(Motie, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse('moties:motie', kwargs={'slug': defaultfilters.slugify(self.titel), 'pk': self.pk})
