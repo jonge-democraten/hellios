@@ -1,0 +1,17 @@
+{% extends 'moties/base.html' %}
+{% load moties_extra %}
+{% block title %}Standpunten {{letter}} - Visie Jonge Democraten{% endblock %}
+{% block content %}
+{% block list-header %}<h1><a href="{% url 'moties:standpunten' letter=letter %}">Standpunten '{{letter}}'</a></h1>{% endblock %}
+
+{% for s in standpunten %}
+<h2>{{ s.naam }}</h2>
+{{ s.beschrijving|standpunt_tekst }}
+{% endfor %}
+
+<p>
+  <strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
+  <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+</p>
+
+{% endblock %}
