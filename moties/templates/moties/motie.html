@@ -1,5 +1,22 @@
 {% extends 'moties/base.html' %}
+{# JS code for hide/show #}
+{% block head %}
+<style>
+      #show_hide_comments { background-color: #578439; background-image: url('https://jongedemocraten.nl/templates/jd/images/TitleBackground.png'); background-repeat: repeat-x; color: white; font-size: 14px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; margin: 0; vertical-align: middle; }
+</style>
+<script>
+$(function(){
+  $('#show_hide_comments').click(function() {
+    $('#comment_form_div').toggle();
+  });
+});
+</script>
+{% endblock %}
+
+{# Page specific title #}
 {% block title %}{{ motie.titel }} - Visie Jonge Democraten{% endblock %}
+
+{# Content #}
 {% block content %} 
    <h1><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
   {% if request.user.is_authenticated %} 
@@ -15,7 +32,9 @@
 
 {# COMMENT FORM #}
 
-<p>
+<div>&nbsp;</div>
+<h3 id="show_hide_comments">Feedback</h3>
+<div id="comment_form_div" style="display: none;">
 <form action="{{ motie.get_absolute_url }}" method="post">{% csrf_token %}
 <fieldset>
 <div><p>Als er iets niet klopt aan de motie (bijvoorbeeld als er een tag ontbreekt), laat dit dan weten aan de beheerder!</p></div>
@@ -49,9 +68,7 @@
 {% endif %}
 </fieldset>
 </form>
-</p>
-
-
+</div>
 
    <p>
 {% if has_notulen %}

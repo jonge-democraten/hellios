@@ -169,7 +169,7 @@ class MotieListView(FilterMixin, ListView):
             if self.request.GET['order'] in self.allowed_sorts:
                 return qs.order_by(*self.allowed_sorts[self.request.GET['order']])
                 
-        return qs.order_by('-datum')
+        return qs.order_by('-datum','titel')
 
     def get_context_data(self, **kwargs):
         context = super(MotieListView, self).get_context_data(**kwargs)
