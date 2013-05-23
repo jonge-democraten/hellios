@@ -84,7 +84,7 @@ def get_content(motie):
     return inleiding + con + over + uit + orde + toe
 
 class MotieFullView(DetailView):
-    queryset = Motie.objects.select_related('congres')
+    queryset = Motie.objects.select_related('congres').prefetch_related('related')
     template_name = 'moties/motie.html'
     context_object_name = "motie"
     model = Motie

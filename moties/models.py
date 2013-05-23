@@ -76,7 +76,7 @@ class Motie(Model):
     indiendatum = DateField(verbose_name="Datum waarop de motie is ingediend", help_text="Als deze motie niet gekoppeld is aan een congres, wordt deze datum gebruikt als datum van de motie")
     tags = ManyToManyField(Tag, blank=True)
     datum = DateField(verbose_name="Datum", db_index=True)
-    #related = ManyToManyField('self', blank=True)
+    related = ManyToManyField('self', blank=True, symmetrical=True)
 
     class Meta:
         ordering = ('datum',)

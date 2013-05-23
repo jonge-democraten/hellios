@@ -30,6 +30,18 @@ $(function(){
 {% endfor %}
    </p>
    <div class="pol_motie">{{ content|safe }}</div>
+{% with rel=motie.related.all %}
+{% if rel %}
+    <p>
+     <strong>Gerelateerde moties:</strong>
+<ul>
+{% for r in rel %}
+<li><a href="{{ r.get_absolute_url }}">{{ r.titel }}</a></li>
+{% endfor %}
+</ul>
+    </p>
+{% endif %}
+{% endwith %}
 
 {# COMMENT FORM #}
 
