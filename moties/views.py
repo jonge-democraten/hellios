@@ -84,6 +84,7 @@ def get_content(motie):
     return inleiding + con + over + uit + orde + toe
 
 class MotieFullView(DetailView):
+    queryset = Motie.objects.select_related('congres')
     template_name = 'moties/motie.html'
     context_object_name = "motie"
     model = Motie
@@ -95,7 +96,6 @@ class MotieFullView(DetailView):
         context['content'] = get_content(motie)
         context['tags'] = Tag.objects.annotate(num_moties=Count('motie')).order_by('-num_moties', 'kort').filter(motie__id__exact=motie.id)
         context['has_notulen'] = has_notulen(motie)
-        context['has_comments'] = motie.comments.count() > 0
         context['comment_form'] = CommentForm()
         context['request'] = self.request
         return context
@@ -113,7 +113,6 @@ class CommentView(SingleObjectMixin, FormView):
         context['content'] = get_content(motie)
         context['tags'] = Tag.objects.annotate(num_moties=Count('motie')).order_by('-num_moties', 'kort').filter(motie__id__exact=motie.id)
         context['has_notulen'] = has_notulen(motie)
-        context['has_comments'] = motie.comments.count() > 0
         context['comment_form'] = self.form
         context['request'] = self.request
         return context
@@ -154,10 +153,9 @@ class FilterMixin(object):
               .filter(**self.get_queryset_filters())
 
 class MotieListView(FilterMixin, ListView):
-    queryset = Motie.objects.all()
+    queryset = Motie.objects.select_related('congres')
     context_object_name = 'moties'
     template_name = 'moties/list.html'
-    paginate_by = 50000
     allowed_filters = {'tag': 'tags__kort',}
     allowed_sorts = {'motie': ('-datum','titel',), 'congres': ('-congres__datum','titel',), 'titel': ('titel',)}
 

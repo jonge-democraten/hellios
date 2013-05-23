@@ -61,12 +61,14 @@ $(function(){
 {{ comment_form.tekst }}
 </div>
 <button class="button" type="submit">Verzenden</button>
-{% if has_comments %}
+{% with comments=motie.comments.all %}
+{% if comments %}
 <div><p><strong>Openstaande opmerkingen:</strong></p></div>
-{% for comment in motie.comments.all %}
+{% for comment in comments %}
 <div><p>{{ comment.tekst }}</p></div>
 {% endfor %}
 {% endif %}
+{% endwith %}
 </fieldset>
 </form>
 </div>
