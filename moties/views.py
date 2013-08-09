@@ -219,6 +219,10 @@ def view_default_programma(request):
     programma = Programma.objects.order_by('-datum')[0]
     return render_to_response('moties/programma.html', {'programma': programma})
 
+def view_default_programma_hoofdstuk(request, hoofdstuk, *args, **kwargs):
+    programma = Programma.objects.order_by('-datum')[0]
+    return render_to_response('moties/programma.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
+
 # from rest_framework import viewsets
 # from moties.serializers import MotieSerializer
 

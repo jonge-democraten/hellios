@@ -1,4 +1,5 @@
 {% extends 'moties/base.html' %}
+{% load moties_extra %}
 {# JS code for hide/show #}
 {% block head %}
 <style>
@@ -29,7 +30,7 @@ $(function(){
 <a href="{% url 'moties:tag' tag.kort %}">{{tag.kort}}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% else %}.{% endif %}
 {% endfor %}
    </p>
-   <div class="pol_motie">{{ content|safe }}</div>
+   <div class="pol_motie">{{ content|safe|render_tekst }}</div>
 {% with rel=motie.related.all %}
 {% if rel %}
     <p>
