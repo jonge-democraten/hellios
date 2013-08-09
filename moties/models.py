@@ -25,6 +25,78 @@ class Tag(Model):
     def __unicode__(self):
         return self.kort
 
+class Programma(Model):
+    datum = DateField()
+    text = TextField(help_text="Beschikbare tags:<br/>[b]vet[/b]<br/>[i]cursief[/i]<br/>[url=\"link\"]linktekst[/url]<br/>"+
+                               "[label=\"linkhier\"] om een anchor te maken die met [url=\"#linkhier\"]...[/url] bereikbaar is<br/>"+
+                               "[img=\"link.jpg\"] voor plaatjes<br/>[ul]...[/ul] om een bulletlist te maken<br/>"+
+                               "[ol]...[/ol] om een genummerde lijst te maken<br/>[li]blablabla[/li] voor elke item in een lijst<br/><br/>"+
+                               "Gebruik een dubbele enter voor een nieuwe paragraaf, een enkele enter voor een line-break.<br/><br/>"+
+                               "Een * aan het begin van een regel opent een nieuwe hoofdstuk, gebruik meerdere **** voor subsecties")
+
+    def __unicode__(self):
+        return "Programma van " + str(self.datum)
+
+    def parse_programma(self):
+        levels = []
+        pieces = []
+
+        cur_level = 0
+        cur_index = None
+        cur_title = None
+        cur_text_list = []
+        cur_text = None
+    
+        for line in self.text.strip().split("\n"):
+            line = line.strip()
+            # strip stars
+            stars = 0
+            while len(line) > 0:
+                if line[0] == '*':
+                    stars = stars + 1
+                    line = line[1:]
+                else:
+                    break
+            line = line.strip() # strip whitespace after stars
+            if len(line) == 0:
+                # empty line
+                if cur_text != None: cur_text_list += [cur_text]
+                cur_text = None
+            elif stars == 0:
+                # no stars
+                if cur_text == None: cur_text = line
+                else: cur_text += "\n" + line
+            else:
+                # update level
+                levels = levels[:stars]
+                while stars > (len(levels)+1): levels = levels + [1]
+                if len(levels) == stars: 
+                    levels[stars-1] = levels[stars-1] + 1
+                elif stars == 0: levels += [1]
+                else: levels += [1]
+    
+                if cur_text != None: cur_text_list += [cur_text]
+                if len(cur_text_list) > 0 or cur_title != None:
+                    pieces += ((cur_level, cur_index, cur_title, tuple(cur_text_list)),)
+    
+                cur_level = len(levels)
+                cur_index = ".".join([str(i) for i in levels])
+                cur_title = line
+                cur_text_list = []
+                cur_text = None
+    
+        if cur_text != None: cur_text_list += [cur_text]
+        pieces += ((cur_level, cur_index, cur_title, tuple(cur_text_list)),)
+        return pieces
+
+    def hoofdstukken_iter(self):
+        count = 1
+        for line in self.text.strip().split("\n"):
+            line = line.strip()
+            if len(line) > 2 and line[0] == "*" and line[1] != "*":
+                yield (str(count), line[1:].strip(),)
+                count += 1
+
 class Congres(Model):
     naam = CharField(max_length=250, unique=True, verbose_name='Naam', help_text='Wordt o.a. gebruikt bij titel van de motie, bijvoorbeeld "Zomercongres 2013"')
     datum = DateField()

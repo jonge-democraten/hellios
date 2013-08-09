@@ -1,4 +1,5 @@
 {% extends 'moties/base.html' %}
+{% load moties_extra %}
 {% block head %}
 <style>
       .pol_search { background: #ebebeb; padding: 10px 20px; }
@@ -38,7 +39,14 @@
      
       <!-- start politiek programma -->
 		  <p><strong>Politiek Programma</strong></p>
-		  <p><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho1.html">1. Beginselen der Jonge Democraten</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho2.html">2. Democratie &amp; Openbaar Bestuur</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho3.html">3. Onderwijs</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho4.html">4. Economie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho5.html">5. Kunst, Cultuur en Media</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho6.html">6. Diversiteit &amp; Participatie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho7.html">7. Volksgezondheid</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho8.html">8. Milieu &amp; Energie</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho9.html">9. Mobiliteit &amp; Ruimtelijke Ordening</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho10.html">10. Justitie &amp; Veiligheid</a><br /><a href="https://jongedemocraten.nl/politiek/politiek-programma/ho11.html">11. Buitenlandse Zaken</a></p>
+<p>
+{% if programma %}
+{% for h in programma.hoofdstukken_iter %}
+{% hoofdstuk_link h 'moties:default_programma'%}<br />
+{% endfor %}
+{% endif %}
+</p>
+
       <p><strong>&raquo; <a href="http://jongedemocraten.nl/jdmedia/documenten-nieuw/finish/1-congressen/20-politiek-programma-oktober-2012.html" target="_blank">Download Politiek Programma</a></strong></p>
       <!-- eind politiek programma -->
       

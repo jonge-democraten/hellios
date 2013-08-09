@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from moties.forms import CommentForm
-from moties.models import Motie, Tag, Comment, Standpunt
+from moties.models import Motie, Tag, Comment, Standpunt, Programma
 from re import sub
 
 def has_notulen(motie):
@@ -82,6 +82,12 @@ def get_content(motie):
     orde = "<p><em>en gaat over tot de orde van de dag.</em></p>"
 
     return inleiding + con + over + uit + orde + toe
+
+class ProgrammaView(DetailView):
+    queryset = Programma.objects.all()
+    model = Programma
+    context_object_name = 'programma'
+    template_name = 'moties/programma.html'
 
 class MotieFullView(DetailView):
     queryset = Motie.objects.select_related('congres').prefetch_related('related')
@@ -198,13 +204,20 @@ def view_home(request):
     tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:25]
     letters = [chr(i) for i in xrange(ord('A'), ord('Z')+1)]
     used = [item['letter'] for item in Standpunt.objects.values('letter').annotate(count=Count('letter')).filter(count__gt=0)]
+    programma = Programma.objects.order_by('-datum')[:1]
+    if len(programma) == 0: programma = None
+    else: programma = programma[0]
     #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
     #letters = [(letter, 1) for letter in letters]
-    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used})
+    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used, 'programma': programma})
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
     return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
+
+def view_default_programma(request):
+    programma = Programma.objects.order_by('-datum')[0]
+    return render_to_response('moties/programma.html', {'programma': programma})
 
 # from rest_framework import viewsets
 # from moties.serializers import MotieSerializer
