@@ -22,11 +22,7 @@ def get_motie_status_list(motie):
         return "(ingediend)"
     return ""
 
-@register.filter(name='motie_has_comments')
-def get_has_comments(motie):
-    return ""
-
-def render_tekst(line):
+def render_tekst(line, p_class=None):
     line = re.sub("\\[b\\]", "<strong>", line)
     line = re.sub("\\[/b\\]", "</strong>", line)
     line = re.sub("\\[i\\]", "<em>", line)
@@ -35,14 +31,23 @@ def render_tekst(line):
     line = re.sub(r'\[/url\]', r'</a>', line)
     line = re.sub(r'\[label=&quot;(.*?)&quot;\]', r'<a name="\1" />', line)
     line = re.sub(r'\[img=&quot;(.*?)&quot;\]', r'<img src="\1" border="0" />', line)
-    line = re.sub(r'\n?\[li\]\n?', r'<li>', line)
-    line = re.sub(r'\n?\[/li\]\n?', r'</div></li>', line)
-    line = re.sub(r'\n?\[ol\]\n?', r'<ol>', line)
-    line = re.sub(r'\n?\[/ol\]\n?', r'</ol>', line)
-    line = re.sub(r'\n?\[ul\]\n?', r'<ul>', line)
-    line = re.sub(r'\n?\[/ul\]\n?', r'</ul>', line)
+    line = re.sub(r'\n?\[li\]\n?', r'<li><span>', line)
+    line = re.sub(r'\n?\[/li\]\n?', r'</span></li>', line)
+    line = re.sub(r'\n?\[ol\]\n?', r'</p><ol>', line)
+    line = re.sub(r'\n?\[ul\]\n?', r'</p><ul>', line)
     line = re.sub(r'\n', r'<br />', line)
-    return line
+    if p_class == None:
+        line = re.sub(r'\n?\[/ol\]\n?', r'</ol><p>', line)
+        line = re.sub(r'\n?\[/ul\]\n?', r'</ul><p>', line)
+        line = "<p>"+line+"</p>"
+        line = re.sub(r'<p></p>', r'', line)
+        return line
+    else:
+        line = re.sub(r'\n?\[/ol\]\n?', r'</ol><p class="%s">' % p_class, line)
+        line = re.sub(r'\n?\[/ul\]\n?', r'</ul><p class="%s">' % p_class, line)
+        line = ("<p class=\"%s\">" % p_class) + line + "</p>"
+        line = re.sub(r'<p class=\"%s\"></p>' % p_class, r'', line)
+        return line
 
 @register.filter(name='render_tekst', needs_autoescape=True)
 @stringfilter
@@ -50,13 +55,13 @@ def render_tekst_filter(line, autoescape=True):
     if autoescape: line = conditional_escape(line)
     return mark_safe(render_tekst(line))
 
-
 @register.filter(name='standpunt_tekst', needs_autoescape=True)
 @stringfilter
 def get_standpunt_tekst(text, autoescape=True):
     if autoescape: text = conditional_escape(text)
-    pieces = [render_tekst(s.strip()) for s in text.strip().split("\n\n")]
-    result = "".join(["<p" + p + "</p>" for p in pieces])
+    text = "\n".join([s.strip() for s in text.strip().split("\n")])
+    pieces = [render_tekst(s) for s in text.split("\n\n")]
+    result = "".join([p for p in pieces])
     return mark_safe(result)
 
 def render_programma_iter(pieces):
@@ -68,24 +73,7 @@ def render_programma_iter(pieces):
             yield "<div class=\"header-%d\"><a href=\"#%s\">%s. %s</a></div>\n" % (lvl, anchor, idx, title,)
         for line in pieces:
             line = conditional_escape(line)
-            line = re.sub("\\[b\\]", "<strong>", line)
-            line = re.sub("\\[/b\\]", "</strong>", line)
-            line = re.sub("\\[i\\]", "<em>", line)
-            line = re.sub("\\[/i\\]", "</em>", line)
-            line = re.sub(r'\[url=&quot;(.*?)&quot;\]', r'<a href="\1">', line)
-            line = re.sub(r'\[/url\]', r'</a>', line)
-            line = re.sub(r'\[label=&quot;(.*?)&quot;\]', r'<a name="\1" />', line)
-            line = re.sub(r'\[img=&quot;(.*?)&quot;\]', r'<img src="\1" border="0" />', line)
-            line = re.sub(r'\n?\[li\]\n?', r'<li><div class="li-level-%d">' % lvl, line)
-            line = re.sub(r'\n?\[/li\]\n?', r'</div></li>', line)
-            line = re.sub(r'\n?\[ol\]\n?', r'<ol>', line)
-            line = re.sub(r'\n?\[/ol\]\n?', r'</ol>', line)
-            line = re.sub(r'\n?\[ul\]\n?', r'<ul>', line)
-            line = re.sub(r'\n?\[/ul\]\n?', r'</ul>', line)
-            line = re.sub(r'\n', r'<br />', line)
-            yield r'<p class="level-%d">' % lvl
-            yield line
-            yield "</p>\n"
+            yield render_tekst(line, "level-%d" % lvl)
 
 @register.simple_tag(name='render_programma')
 def render_programma(programma):
@@ -103,7 +91,9 @@ def select_hoofdstuk(pieces, hoofdstuk):
 
 @register.simple_tag(name='render_programma_hoofdstuk')
 def render_programma_hoofdstuk(programma, hoofdstuk):
-    return mark_safe(("".join([s for s in render_programma_iter(select_hoofdstuk(programma.parse_programma(), hoofdstuk))])))
+    pieces = programma.parse_programma()
+    pieces = select_hoofdstuk(pieces, hoofdstuk)
+    return mark_safe("".join([s for s in render_programma_iter(pieces)]))
 
 @register.simple_tag(name='hoofdstuk_link')
 def get_hoofdstuk_link(hoofdstuk, base_url=None):
