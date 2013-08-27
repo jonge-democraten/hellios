@@ -75,16 +75,17 @@ class Programma(Model):
                     levels[stars-1] = levels[stars-1] + 1
                 elif stars == 0: levels += [1]
                 else: levels += [1]
+   
+                if cur_text != None: cur_text_list += [cur_text]
+                if len(cur_text_list) > 0 or cur_title != None:
+                    pieces += ((cur_level, cur_index, sup, cur_title, tuple(cur_text_list)),)
+    
                 if line[0] == "!":
                     sup = True
                     line = line[1:].strip()
                 else:
                     sup = False
-    
-                if cur_text != None: cur_text_list += [cur_text]
-                if len(cur_text_list) > 0 or cur_title != None:
-                    pieces += ((cur_level, cur_index, sup, cur_title, tuple(cur_text_list)),)
-    
+
                 cur_level = len(levels)
                 cur_index = ".".join([str(i) for i in levels])
                 cur_title = line

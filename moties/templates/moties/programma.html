@@ -3,9 +3,17 @@
 
 {% block head %}
 <style>
-    .level-1 {
-        font-style: italic
-    }
+.header-1 { font-size: 24px; font-weight: bold; width: 100%; border-bottom: 2px solid #000; padding-bottom: 6px;}
+.header-1 a { color: #000; }
+.header-2 a { background: url('https://jongedemocraten.nl/templates/jd/images/TitleBackground.png') repeat-x #578439; color: #fff; font-size: 18px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; vertical-align: middle; margin-top: 40px; }
+.header-3 a { background: #ddd; color: #222; font-size: 14px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; vertical-align: middle; margin-top: 40px; }
+.header-3 { font-weight: bold; }
+.header-1, .header-2, .header-3 { margin-top: 20px; }
+.header-1 a:hover, .header-2 a:hover, .header-3 a:hover { text-decoration: none; }
+p.level-1, p.level-2, p.level-3 { margin-top: 10px; margin-bottom: 0px; line-height: 18px; text-align: justify; } 
+.hoofdstuk_link { display: inline-block; padding: 4px 8px 4px 0px; }
+.hoofdstuk_link a { background: #ddd; border-radius: 3px; color: #000; padding: 4px 6px; line-height: 28px; }
+.hoofdstuk_link a:hover { text-decoration: none; color: #fff; background: #333; }
 </style>
 {% endblock %}
 
