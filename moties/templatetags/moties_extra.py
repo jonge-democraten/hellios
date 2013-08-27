@@ -75,7 +75,7 @@ def render_programma_iter(pieces):
             if sup:
                 yield "<div class=\"header-%d\"><a href=\"#%s\">%s</a></div>\n" % (lvl, anchor, title,)
             else:
-                yield "<div class=\"header-%d\"><a href=\"#%s\">%s. %s</a></div>\n" % (lvl, anchor, idx, title,)
+                yield "<div class=\"header-%d\"><a href=\"#%s\"><span class=\"nummering\">%s.&nbsp;</span>%s</a></div>\n" % (lvl, anchor, idx, title,)
         for line in pieces:
             line = conditional_escape(line)
             yield render_tekst(line, "level-%d" % lvl)
