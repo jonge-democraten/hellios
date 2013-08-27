@@ -33,16 +33,18 @@ def render_tekst(line, p_class=None):
     line = re.sub(r'\[img=&quot;(.*?)&quot;\]', r'<img src="\1" border="0" />', line)
     line = re.sub(r'\n?\[li\]\n?', r'<li><span>', line)
     line = re.sub(r'\n?\[/li\]\n?', r'</span></li>', line)
-    line = re.sub(r'\n?\[ol\]\n?', r'</p><ol>', line)
-    line = re.sub(r'\n?\[ul\]\n?', r'</p><ul>', line)
     line = re.sub(r'\n', r'<br />', line)
     if p_class == None:
+        line = re.sub(r'\n?\[ol\]\n?', r'</p><ol>', line)
+        line = re.sub(r'\n?\[ul\]\n?', r'</p><ul>', line)
         line = re.sub(r'\n?\[/ol\]\n?', r'</ol><p>', line)
         line = re.sub(r'\n?\[/ul\]\n?', r'</ul><p>', line)
         line = "<p>"+line+"</p>"
         line = re.sub(r'<p></p>', r'', line)
         return line
     else:
+        line = re.sub(r'\n?\[ol\]\n?', r'</p><ol class="%s">' % p_class, line)
+        line = re.sub(r'\n?\[ul\]\n?', r'</p><ul class="%s">' % p_class, line)
         line = re.sub(r'\n?\[/ol\]\n?', r'</ol><p class="%s">' % p_class, line)
         line = re.sub(r'\n?\[/ul\]\n?', r'</ul><p class="%s">' % p_class, line)
         line = ("<p class=\"%s\">" % p_class) + line + "</p>"
