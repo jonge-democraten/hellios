@@ -67,12 +67,15 @@ def get_standpunt_tekst(text, autoescape=True):
     return mark_safe(result)
 
 def render_programma_iter(pieces):
-    for (lvl,idx,title,pieces) in pieces:
+    for (lvl,idx,sup,title,pieces) in pieces:
         if title != None: title = conditional_escape(title)
         if idx != None:
             anchor = "_".join([z for z in idx.split(".")])
             yield "<a name=\"%s\"></a>" % (anchor,)
-            yield "<div class=\"header-%d\"><a href=\"#%s\">%s. %s</a></div>\n" % (lvl, anchor, idx, title,)
+            if sup:
+                yield "<div class=\"header-%d\"><a href=\"#%s\">%s</a></div>\n" % (lvl, anchor, title,)
+            else:
+                yield "<div class=\"header-%d\"><a href=\"#%s\">%s. %s</a></div>\n" % (lvl, anchor, idx, title,)
         for line in pieces:
             line = conditional_escape(line)
             yield render_tekst(line, "level-%d" % lvl)

@@ -46,6 +46,7 @@ class Programma(Model):
         cur_title = None
         cur_text_list = []
         cur_text = None
+        sup = False
     
         for line in self.text.strip().split("\n"):
             line = line.strip()
@@ -74,6 +75,11 @@ class Programma(Model):
                     levels[stars-1] = levels[stars-1] + 1
                 elif stars == 0: levels += [1]
                 else: levels += [1]
+                if line[0] == "!":
+                    sup = True
+                    line = line[1:].strip()
+                else:
+                    sup = False
     
                 if cur_text != None: cur_text_list += [cur_text]
                 if len(cur_text_list) > 0 or cur_title != None:
@@ -86,7 +92,7 @@ class Programma(Model):
                 cur_text = None
     
         if cur_text != None: cur_text_list += [cur_text]
-        pieces += ((cur_level, cur_index, cur_title, tuple(cur_text_list)),)
+        pieces += ((cur_level, cur_index, sup, cur_title, tuple(cur_text_list)),)
         return pieces
 
     def hoofdstukken_iter(self):

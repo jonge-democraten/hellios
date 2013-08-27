@@ -14,13 +14,17 @@
 
 {# Content #}
 {% block content %} 
+{% if hoofdstuk %}
 {% for h in programma.hoofdstukken_iter %}
 <div class='hoofdstuk_link'>{% hoofdstuk_link h %}</div>
 {% endfor %}
 <p>&nbsp;</p>
-{% if hoofdstuk %}
 {% render_programma_hoofdstuk programma hoofdstuk %}
 {% else %}
+{% for h in programma.hoofdstukken_iter %}
+<div class='hoofdstuk_link'>{% hoofdstuk_link h %}</div>
+{% endfor %}
+<p>&nbsp;</p>
 {% render_programma programma %}
 {% endif %}
 {% endblock %}
