@@ -83,7 +83,7 @@ class Programma(Model):
     
                 if cur_text != None: cur_text_list += [cur_text]
                 if len(cur_text_list) > 0 or cur_title != None:
-                    pieces += ((cur_level, cur_index, cur_title, tuple(cur_text_list)),)
+                    pieces += ((cur_level, cur_index, sup, cur_title, tuple(cur_text_list)),)
     
                 cur_level = len(levels)
                 cur_index = ".".join([str(i) for i in levels])

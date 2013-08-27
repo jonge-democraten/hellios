@@ -16,7 +16,12 @@
 {% block content %} 
 {% if hoofdstuk %}
 {% for h in programma.hoofdstukken_iter %}
+{% hoofdstuk_active h hoofdstuk as isactive %}
+{% if isactive %}
+<div class='hoofdstuk_link active'>{% hoofdstuk_link h %}</div>
+{% else %}
 <div class='hoofdstuk_link'>{% hoofdstuk_link h %}</div>
+{% endif %}
 {% endfor %}
 <p>&nbsp;</p>
 {% render_programma_hoofdstuk programma hoofdstuk %}

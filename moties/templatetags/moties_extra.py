@@ -110,4 +110,10 @@ def get_hoofdstuk_link(hoofdstuk, base_url=None):
         url = reverse('moties:default_hoofdstuk', kwargs={'hoofdstuk': nr,})
         return mark_safe(r'<a href="%s">%s. %s</a>' % (url,nr,title,))
 
-
+@register.assignment_tag(name='hoofdstuk_active')
+def get_hoofdstuk_is_active(hoofdstuk, active):
+    (nr, title) = hoofdstuk
+    if str(active) == str(nr):
+        return True
+    else:   
+        return False
