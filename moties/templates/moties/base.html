@@ -29,14 +29,16 @@
   <body>
     <div class="container">
       <div id="homeDiv">
-      {% block logo %}<a href="https://www.jongedemocraten.nl" target="_blank"><img src="{% static 'moties/images/jdpolitiek-logo.png' %}" border="0" /></a>{% endblock %}
+      {% block logo %}<a href="{% url 'moties:home' %}"><img src="{% static 'moties/images/jdpolitiek-logo.png' %}" border="0" /></a>{% endblock %}
 {% block topmenu %}
+<div id="menuDiv">
 <ul class="menu">
 <li><a href="{% url 'moties:home' %}">JD Visie Home</a></li>
 <li><a href="{% url 'moties:default_hoofdstuk' 1%}">Politiek Programma</a></li>
 <li><a href="{% url 'moties:motie-list' %}">Politieke Moties</a></li>
 <li><a href="http://www.jd.nl" target="_blank">www.jd.nl</a></li>
 </ul>
+</div>
 {% endblock %}
       <p>&nbsp;</p>
       {% block content %}{% endblock %}
