@@ -13,11 +13,11 @@
 
       .pol_tags { width: 150px; font-size: 12px; }
 
-      #menuDiv { height: 30px; background-image: url('http://jongedemocraten.nl//templates/jd/images/MenuBackground.png'); border-left: 1px solid #E2E2E1; border-right: 1px solid #E2E2E1; }
-      #menuDiv ul { margin: 0px; padding: 0px; height: 30px; }
-      #menuDiv ul li { margin: 0px; display: inline-block; line-height: 30px; height: 30px; padding: 0 20px; border-right: 1px solid #E2E2E1; }
-      #menuDiv ul li a { text-decoration: none; color: #4D4D4D; }
-      #menuDiv ul li a:hover { color: #99B44A; }
+      #menu_div { height: 30px; background-image: url('http://jongedemocraten.nl//templates/jd/images/MenuBackground.png'); border-left: 1px solid #E2E2E1; border-right: 1px solid #E2E2E1; }
+      #menu_div ul { margin: 0px; padding: 0px; height: 30px; }
+      #menu_div ul li { margin: 0px; display: inline-block; line-height: 30px; height: 30px; padding: 0 20px; border-right: 1px solid #E2E2E1; }
+      #menu_div ul li a { text-decoration: none; color: #4D4D4D; }
+      #menu_div ul li a:hover { color: #99B44A; }
 
       fieldset textarea { margin-bottom: 3px; }
       fieldset button { margin-left: 150px; }
@@ -31,7 +31,7 @@
       <div id="homeDiv">
       {% block logo %}<a href="{% url 'moties:home' %}"><img src="{% static 'moties/images/jdpolitiek-logo.png' %}" border="0" /></a>{% endblock %}
 {% block topmenu %}
-<div id="menuDiv">
+<div id="menu_div">
 <ul class="menu">
 <li><a href="{% url 'moties:home' %}">JD Visie Home</a></li>
 <li><a href="{% url 'moties:default_hoofdstuk' 1%}">Politiek Programma</a></li>
