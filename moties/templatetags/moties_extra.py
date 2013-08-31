@@ -100,6 +100,14 @@ def render_programma_hoofdstuk(programma, hoofdstuk):
     pieces = select_hoofdstuk(pieces, hoofdstuk)
     return mark_safe("".join([s for s in render_programma_iter(pieces)]))
 
+@register.simple_tag(name='hoofdstuk_titel')
+def get_hoofdstuk_titel(hoofdstuk, programma):
+    for h in programma.hoofdstukken_iter():
+        (nr, title) = h
+        if str(hoofdstuk) == str(nr):
+            return title
+    return "N/A"
+
 @register.simple_tag(name='hoofdstuk_link')
 def get_hoofdstuk_link(hoofdstuk, base_url=None):
     (nr, title) = hoofdstuk

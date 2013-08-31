@@ -24,7 +24,7 @@ p.level-1, ul.level-1 { font-style: italic; }
 {% endblock %}
 
 {# Page specific title #}
-{% block title %}Politiek Programma van de Jonge Democraten{% endblock %}
+{% block title %}{% if hoofdstuk %}{% hoofdstuk_titel hoofdstuk programma%} - Politiek Programma - JD Visie{% else %}Politiek Programma - JD Visie{% endif %}{% endblock %}
 
 {# Content #}
 {% block content %} 
