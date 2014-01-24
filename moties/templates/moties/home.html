@@ -110,6 +110,6 @@
 
 <h3 class="h3button">Resultatenboeken</h3>
 {% for boek in resultatenboeken %}
-<p><strong>Resultatenboek {{boek.title}}: <a href="{{boek.file}}">Download PDF</a></strong> ({{boek.file.size|filesizeformat}})</p>
+<p><strong>Resultatenboek {{boek.title}}: <a href="{{MEDIA_URL}}{{boek.file}}">Download PDF</a></strong> ({{boek.file.size|filesizeformat}})</p>
 {% endfor %} 
 {% endblock %} 

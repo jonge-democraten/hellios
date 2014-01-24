@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, render_to_response
+from django.template.context import RequestContext
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from moties.forms import CommentForm
@@ -210,7 +211,7 @@ def view_home(request):
     else: programma = programma[0]
     #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
     #letters = [(letter, 1) for letter in letters]
-    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken,})
+    return render_to_response("moties/home.html", context_instance=RequestContext(request, {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken}))
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
