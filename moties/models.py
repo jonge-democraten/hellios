@@ -188,3 +188,10 @@ class Comment(Model):
 
     def __unicode__(self):
         return "Comment van %s" % (self.auteur,)
+
+class Resultatenboek(Model):
+    title = CharField(max_length=250, verbose_name="Naam", primary_key=True)
+    file = FileField(upload_to='resultatenboeken/%Y/%m/%d', null=True)
+
+    def __unicode__(self):
+        return "Resultatenboek %s" % (self.title,)

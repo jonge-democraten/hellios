@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
 from moties.forms import CommentForm
-from moties.models import Motie, Tag, Comment, Standpunt, Programma
+from moties.models import Motie, Tag, Comment, Standpunt, Programma, Resultatenboek
 from re import sub
 
 def has_notulen(motie):
@@ -205,11 +205,12 @@ def view_home(request):
     letters = [chr(i) for i in xrange(ord('A'), ord('Z')+1)]
     used = [item['letter'] for item in Standpunt.objects.values('letter').annotate(count=Count('letter')).filter(count__gt=0)]
     programma = Programma.objects.order_by('-datum')[:1]
+    resultatenboeken = Resultatenboek.objects.order_by('-title')
     if len(programma) == 0: programma = None
     else: programma = programma[0]
     #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
     #letters = [(letter, 1) for letter in letters]
-    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used, 'programma': programma})
+    return render_to_response("moties/home.html", {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken,})
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
