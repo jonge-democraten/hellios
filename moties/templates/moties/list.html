@@ -11,6 +11,7 @@
   <li>
   {{ motie.congres.kort }} - <a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
   {{ motie|motie_status_list }}
+  {% if motie.actueel %} (actuele PM) {% endif %}
   {% if request.user.is_authenticated %} 
     {% if motie.comments.count %} ({{motie.comments.count}} comments) {% endif %} 
     <a href="{% url 'admin:moties_motie_change' motie.pk %}">(wijzigen)</a>

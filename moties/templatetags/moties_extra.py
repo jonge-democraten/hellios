@@ -41,6 +41,9 @@ def render_tekst(line, p_class=None):
         line = re.sub(r'\n?\[/ul\]\n?', r'</ul><p>', line)
         line = "<p>"+line+"</p>"
         line = re.sub(r'<p></p>', r'', line)
+        # hack
+        line = re.sub(r'<p><p>', r'<p>', line)
+        line = re.sub(r'</p></p>', r'</p>', line)
         return line
     else:
         line = re.sub(r'\n?\[ol\]\n?', r'</p><ol class="%s">' % p_class, line)

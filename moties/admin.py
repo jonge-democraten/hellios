@@ -9,7 +9,7 @@ class CommentInline(admin.TabularInline):
 
 class MotieAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['titel','indiener','woordvoerder','constateringen','overwegingen','uitspraken','toelichting','content','indiendatum']}),
+        (None, {'fields': ['titel','indiener','woordvoerder','actueel','constateringen','overwegingen','uitspraken','toelichting','content','indiendatum']}),
         ('Status', {'fields': ['status', 'congres']}),
         ('Overig', {'fields': ['tags','related']}),
     ]

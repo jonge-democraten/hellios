@@ -8,6 +8,9 @@ class Standpunt(Model):
     beschrijving = TextField(help_text="Gebruik dubbele enter voor nieuwe paragraaf")
     letter = CharField(blank=True, max_length=1, verbose_name="Letter voor indexering", help_text="Wordt automatisch gegenereerd indien niet ingevuld")
 
+    class Meta:
+        verbose_name_plural = 'standpunten'
+
     def save(self, *args, **kwargs):
         if self.letter == None:
             self.letter = self.naam[0].upper()
@@ -33,6 +36,10 @@ class Programma(Model):
                                "[ol]...[/ol] om een genummerde lijst te maken<br/>[li]blablabla[/li] voor elke item in een lijst<br/><br/>"+
                                "Gebruik een dubbele enter voor een nieuwe paragraaf, een enkele enter voor een line-break.<br/><br/>"+
                                "Een * aan het begin van een regel opent een nieuwe hoofdstuk, gebruik meerdere **** voor subsecties")
+    zichtbaar = BooleanField(default=True)
+
+    class Meta:
+        verbose_name_plural = 'programma\'s'
 
     def __unicode__(self):
         return "Programma van " + str(self.datum)
@@ -114,6 +121,7 @@ class Congres(Model):
 
     class Meta:
         ordering = ('datum',)
+        verbose_name_plural = 'congressen'
 
     def __unicode__(self):
         return "Congres %s" % self.naam
@@ -156,9 +164,11 @@ class Motie(Model):
     tags = ManyToManyField(Tag, blank=True)
     datum = DateField(verbose_name="Datum", db_index=True)
     related = ManyToManyField('self', blank=True, symmetrical=True)
+    actueel = BooleanField(default=False, help_text="Actuele PM")
 
     class Meta:
         ordering = ('datum',)
+        verbose_name_plural = 'politieke moties'
 
     def __unicode__(self):
         return self.titel
@@ -192,6 +202,9 @@ class Comment(Model):
 class Resultatenboek(Model):
     title = CharField(max_length=250, verbose_name="Naam", primary_key=True)
     file = FileField(upload_to='resultatenboeken/%Y/%m/%d', null=True)
+
+    class Meta:
+        verbose_name_plural = 'resultatenboeken'
 
     def __unicode__(self):
         return "Resultatenboek %s" % (self.title,)

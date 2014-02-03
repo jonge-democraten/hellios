@@ -21,6 +21,7 @@ $(function(){
 {# Content #}
 {% block content %} 
    <h1><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
+  {% if motie.actueel %} (actuele politieke motie) {% endif %}
   {% if request.user.is_authenticated %} 
     <a href="{% url 'admin:moties_motie_change' motie.pk %}">(wijzigen)</a>
   {% endif %}</h1><h2>({{status|safe}})</h2>

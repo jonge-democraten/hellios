@@ -205,7 +205,7 @@ def view_home(request):
     tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:25]
     letters = [chr(i) for i in xrange(ord('A'), ord('Z')+1)]
     used = [item['letter'] for item in Standpunt.objects.values('letter').annotate(count=Count('letter')).filter(count__gt=0)]
-    programma = Programma.objects.order_by('-datum')[:1]
+    programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[:1]
     resultatenboeken = Resultatenboek.objects.order_by('-title')
     if len(programma) == 0: programma = None
     else: programma = programma[0]
@@ -218,11 +218,11 @@ def view_standpunten(request, letter, *args, **kwargs):
     return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
 
 def view_default_programma(request):
-    programma = Programma.objects.order_by('-datum')[0]
+    programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
     return render_to_response('moties/programma.html', {'programma': programma})
 
 def view_default_programma_hoofdstuk(request, hoofdstuk, *args, **kwargs):
-    programma = Programma.objects.order_by('-datum')[0]
+    programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
     return render_to_response('moties/programma.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
 
 # from rest_framework import viewsets
