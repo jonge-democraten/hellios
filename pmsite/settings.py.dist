@@ -108,6 +108,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'moties',
     'django_extensions',
+    'janeus',
 )
 
 # import os
@@ -148,3 +149,10 @@ LOGGING = {
     }
 }
 
+# JANEUS_SERVER = "ldap://127.0.0.1:389/"
+# JANEUS_DN = "cn=readuser,ou=sysUsers,dc=jd,dc=nl"
+# JANEUS_PASS = ""
+# JANEUS_AUTH = lambda user,groups: "role-team-ict" in groups or "role-bestuur-landelijk" in groups
+# from django.db.models import Q
+# JANEUS_AUTH_PERMISSIONS = lambda user,groups: Q(content_type__app_label='moties')
+# AUTHENTICATION_BACKENDS = ('janeus.backend.JaneusBackend', 'django.contrib.auth.backends.ModelBackend',)
