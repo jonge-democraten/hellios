@@ -1,15 +1,10 @@
 from django.conf.urls import patterns, url, include
 from django.views.generic import DetailView, ListView
-from moties.models import Motie
-from moties.views import *
-from moties import views
-# from rest_framework import routers
+from hellios.models import Motie
+from hellios.views import *
+from hellios import views
 
-#router = routers.DefaultRouter()
-#router.register(r'moties', views.MotieViewSet)
-
-urlpatterns = patterns('moties.views',
-    #url(r'^', include(router.urls)),
+urlpatterns = patterns('hellios.views',
     url(r'^$', views.view_home, name='home'),
     url(r'^list/$', MotieListView.as_view(), name='motie-list'),
     url(r'^tag/(?P<tag>.+)/$', TagView.as_view(), name='tag'),
@@ -20,5 +15,4 @@ urlpatterns = patterns('moties.views',
     url(r'^programma/(?P<pk>\d+)/$', ProgrammaView.as_view(), name='programma'),
     url(r'^programma/$', views.view_default_programma, name='default_programma'),
     url(r'^programma/hoofdstuk/(?P<hoofdstuk>\d+)/$', views.view_default_programma_hoofdstuk, name='default_hoofdstuk'),
-    # url(r'^search/', include('haystack.urls')),
 )

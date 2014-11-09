@@ -54,8 +54,8 @@ class Migration(migrations.Migration):
                 ('indiendatum', models.DateField(help_text=b'Als deze motie niet gekoppeld is aan een congres, wordt deze datum gebruikt als datum van de motie', verbose_name=b'Datum waarop de motie is ingediend')),
                 ('datum', models.DateField(verbose_name=b'Datum', db_index=True)),
                 ('actueel', models.BooleanField(default=False, help_text=b'Actuele PM')),
-                ('congres', models.ForeignKey(related_name=b'moties', verbose_name=b'Congres', blank=True, to='moties.Congres', null=True)),
-                ('related', models.ManyToManyField(related_name='related_rel_+', to='moties.Motie', blank=True)),
+                ('congres', models.ForeignKey(related_name=b'moties', verbose_name=b'Congres', blank=True, to='hellios.Congres', null=True)),
+                ('related', models.ManyToManyField(related_name='related_rel_+', to='hellios.Motie', blank=True)),
             ],
             options={
                 'ordering': ('datum',),
@@ -112,19 +112,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='motie',
             name='tags',
-            field=models.ManyToManyField(to='moties.Tag', blank=True),
+            field=models.ManyToManyField(to='hellios.Tag', blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='congres',
             name='tag',
-            field=models.ForeignKey(verbose_name=b'Congrestag', to='moties.Tag', null=True),
+            field=models.ForeignKey(verbose_name=b'Congrestag', to='hellios.Tag', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='comment',
             name='motie',
-            field=models.ForeignKey(related_name=b'comments', to='moties.Motie'),
+            field=models.ForeignKey(related_name=b'comments', to='hellios.Motie'),
             preserve_default=True,
         ),
     ]

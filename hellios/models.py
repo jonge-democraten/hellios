@@ -188,7 +188,7 @@ class Motie(Model):
                     super(Motie, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('moties:motie', kwargs={'slug': defaultfilters.slugify(self.titel), 'pk': self.pk})
+        return reverse('hellios:motie', kwargs={'slug': defaultfilters.slugify(self.titel), 'pk': self.pk})
 
 class Comment(Model):
     tekst = TextField()

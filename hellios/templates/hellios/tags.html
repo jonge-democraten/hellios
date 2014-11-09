@@ -1,0 +1,14 @@
+{% extends 'hellios/base.html' %}
+{% block title %}Alle categorie&euml;n - Politieke Moties - JD Visie{% endblock %}
+{% block content %}
+{% block list-header %}<h1><a href="{% url 'hellios:tag-list' %}">Alle tags</a></h1>{% endblock %}
+
+{% for tag in tags %}
+<a href="{% url 'hellios:tag' tag=tag.kort %}">{{ tag.kort }}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% endif %}{% endfor %}
+
+<p>
+  <strong>&raquo; <a href="{% url 'hellios:motie-list' %}">Bekijk alle moties</a></strong><br />
+  <strong>&raquo; <a href="{% url 'hellios:home' %}">Ga terug naar de politieke site</a></strong>
+</p>
+
+{% endblock %}

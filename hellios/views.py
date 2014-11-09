@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
-from moties.forms import CommentForm
-from moties.models import Motie, Tag, Comment, Standpunt, Programma, Resultatenboek
+from hellios.forms import CommentForm
+from hellios.models import Motie, Tag, Comment, Standpunt, Programma, Resultatenboek
 from re import sub
 
 def has_notulen(motie):
@@ -88,11 +88,11 @@ class ProgrammaView(DetailView):
     queryset = Programma.objects.all()
     model = Programma
     context_object_name = 'programma'
-    template_name = 'moties/programma.html'
+    template_name = 'hellios/programma.html'
 
 class MotieFullView(DetailView):
     queryset = Motie.objects.select_related('congres').prefetch_related('related')
-    template_name = 'moties/motie.html'
+    template_name = 'hellios/motie.html'
     context_object_name = "motie"
     model = Motie
 
@@ -108,7 +108,7 @@ class MotieFullView(DetailView):
         return context
 
 class CommentView(SingleObjectMixin, FormView):
-    template_name = 'moties/motie.html'
+    template_name = 'hellios/motie.html'
     context_object_name = "motie"
     form_class = CommentForm
     model = Motie
@@ -162,7 +162,7 @@ class FilterMixin(object):
 class MotieListView(FilterMixin, ListView):
     queryset = Motie.objects.select_related('congres')
     context_object_name = 'moties'
-    template_name = 'moties/list.html'
+    template_name = 'hellios/list.html'
     allowed_filters = {'tag': 'tags__kort',}
     allowed_sorts = {'motie': ('-datum','titel',), 'congres': ('-congres__datum','titel',), 'titel': ('titel',)}
 
@@ -183,7 +183,7 @@ class MotieListView(FilterMixin, ListView):
         return context
 
 class TagView(MotieListView):
-    template_name = 'moties/tag.html'
+    template_name = 'hellios/tag.html'
 
     def get_context_data(self, **kwargs):
         context = super(TagView, self).get_context_data(**kwargs)
@@ -199,7 +199,7 @@ class TagListView(ListView):
                 .filter(num_moties__gt=0)\
                 .order_by('-num_moties')
     context_object_name = 'tags'
-    template_name = 'moties/tags.html'
+    template_name = 'hellios/tags.html'
 
 def view_home(request):
     tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:25]
@@ -211,23 +211,16 @@ def view_home(request):
     else: programma = programma[0]
     #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
     #letters = [(letter, 1) for letter in letters]
-    return render_to_response("moties/home.html", context_instance=RequestContext(request, {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken}))
+    return render_to_response("hellios/home.html", context_instance=RequestContext(request, {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken}))
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
-    return render_to_response('moties/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
+    return render_to_response('hellios/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
 
 def view_default_programma(request):
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
-    return render_to_response('moties/programma.html', {'programma': programma})
+    return render_to_response('hellios/programma.html', {'programma': programma})
 
 def view_default_programma_hoofdstuk(request, hoofdstuk, *args, **kwargs):
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
-    return render_to_response('moties/programma.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
-
-# from rest_framework import viewsets
-# from moties.serializers import MotieSerializer
-
-# class MotieViewSet(viewsets.ModelViewSet):
-#     queryset = Motie.objects.all()
-#     serializer_class = MotieSerializer
+    return render_to_response('hellios/programma.html', {'programma': programma, 'hoofdstuk': hoofdstuk})

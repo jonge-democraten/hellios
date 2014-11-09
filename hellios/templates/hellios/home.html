@@ -1,5 +1,5 @@
-{% extends 'moties/base.html' %}
-{% load moties_extra %}
+{% extends 'hellios/base.html' %}
+{% load hellios_extra %}
 {% block head %}
 <style>
       .pol_search { background: #ebebeb; padding: 10px 20px; }
@@ -65,7 +65,7 @@
 		  <div class="pol_alfabet">
 {% for l in letters %}
 {% if l in used %}
-<a href="{% url 'moties:standpunten' letter=l %}">{{ l }}</a>
+<a href="{% url 'hellios:standpunten' letter=l %}">{{ l }}</a>
 {% else %}
 <div class="notused">{{ l }}</div>
 {% endif %}
@@ -82,10 +82,10 @@
 		  <p><i>Veelgebruikte tags:</i></p>
 		  <div class="pol_tags">
 {% for tag in tags %}
-<a href="{% url 'moties:tag' tag=tag.kort %}">{{ tag.kort }}</a>&nbsp;({{ tag.num_moties }}){% if not forloop.last %}, {% endif %}{% endfor %}
+<a href="{% url 'hellios:tag' tag=tag.kort %}">{{ tag.kort }}</a>&nbsp;({{ tag.num_moties }}){% if not forloop.last %}, {% endif %}{% endfor %}
       </div>
-      <p><strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
-     <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong></p>
+      <p><strong>&raquo; <a href="{% url 'hellios:motie-list' %}">Bekijk alle moties</a></strong><br />
+     <strong>&raquo; <a href="{% url 'hellios:tag-list' %}">Bekijk alle tags</a></strong></p>
 		  <!-- eind moties -->
 		  
 		  

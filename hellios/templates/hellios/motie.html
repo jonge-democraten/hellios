@@ -1,5 +1,5 @@
-{% extends 'moties/base.html' %}
-{% load moties_extra %}
+{% extends 'hellios/base.html' %}
+{% load hellios_extra %}
 {# JS code for hide/show #}
 {% block head %}
 <style>
@@ -23,12 +23,12 @@ $(function(){
    <h1><a href="{{ motie.get_absolute_url }}">{{ motie.titel }}</a>
   {% if motie.actueel %} (actuele politieke motie) {% endif %}
   {% if request.user.is_authenticated %} 
-    <a href="{% url 'admin:moties_motie_change' motie.pk %}">(wijzigen)</a>
+    <a href="{% url 'admin:hellios_motie_change' motie.pk %}">(wijzigen)</a>
   {% endif %}</h1><h2>({{status|safe}})</h2>
    <p>
      <strong>Tags:</strong> 
 {% for tag in tags %}
-<a href="{% url 'moties:tag' tag.kort %}">{{tag.kort}}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% else %}.{% endif %}
+<a href="{% url 'hellios:tag' tag.kort %}">{{tag.kort}}</a> ({{ tag.num_moties }}){% if not forloop.last %}, {% else %}.{% endif %}
 {% endfor %}
    </p>
    <div class="pol_motie">{{ content|safe|render_tekst }}</div>
@@ -91,8 +91,8 @@ $(function(){
 {% if has_notulen %}
      <strong>&raquo; <a href="{{ motie.congres.notulen }}">Ga naar de notulen</a></strong><br />
 {% endif %}
-     <strong>&raquo; <a href="{% url 'moties:motie-list' %}">Bekijk alle moties</a></strong><br />
-     <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong><br />
-     <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+     <strong>&raquo; <a href="{% url 'hellios:motie-list' %}">Bekijk alle moties</a></strong><br />
+     <strong>&raquo; <a href="{% url 'hellios:tag-list' %}">Bekijk alle tags</a></strong><br />
+     <strong>&raquo; <a href="{% url 'hellios:home' %}">Ga terug naar de politieke site</a></strong>
    </p>
 {% endblock %}

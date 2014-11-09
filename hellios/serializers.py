@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from moties.models import Motie
+from hellios.models import Motie
 
 class MotieSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

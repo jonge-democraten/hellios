@@ -1,6 +1,6 @@
 import datetime
 from haystack import indexes
-from moties.models import *
+from hellios.models import *
 
 class MotieIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)

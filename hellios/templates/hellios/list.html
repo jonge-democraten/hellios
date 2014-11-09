@@ -1,8 +1,8 @@
-{% extends 'moties/base.html' %}
+{% extends 'hellios/base.html' %}
 {% block title %}Alle Politieke Moties - JD Visie{% endblock %}
-{% load moties_extra %}
+{% load hellios_extra %}
 {% block content %}
-{% block list-header %}<h1><a href="{% url 'moties:motie-list' %}">Alle moties</a></h1>{% endblock %}
+{% block list-header %}<h1><a href="{% url 'hellios:motie-list' %}">Alle moties</a></h1>{% endblock %}
 
 <p><strong>Sorteer</strong> op <a href="{{ base_url }}?order=congres">congresdatum</a> of <a href="{{ base_url }}?order=titel">titel</a>.</p>
 
@@ -14,7 +14,7 @@
   {% if motie.actueel %} (actuele PM) {% endif %}
   {% if request.user.is_authenticated %} 
     {% if motie.comments.count %} ({{motie.comments.count}} comments) {% endif %} 
-    <a href="{% url 'admin:moties_motie_change' motie.pk %}">(wijzigen)</a>
+    <a href="{% url 'admin:hellios_motie_change' motie.pk %}">(wijzigen)</a>
   {% endif %}
   </li>
   {% endfor %}
@@ -25,8 +25,8 @@
 
 {% block links-bottom %}
   <p>
-    <strong>&raquo; <a href="{% url 'moties:tag-list' %}">Bekijk alle tags</a></strong><br />
-    <strong>&raquo; <a href="{% url 'moties:home' %}">Ga terug naar de politieke site</a></strong>
+    <strong>&raquo; <a href="{% url 'hellios:tag-list' %}">Bekijk alle tags</a></strong><br />
+    <strong>&raquo; <a href="{% url 'hellios:home' %}">Ga terug naar de politieke site</a></strong>
   </p>
 {% endblock %}
 

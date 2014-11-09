@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <title>{% block title %}Visie Jonge Democraten{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="https://jongedemocraten.nl/templates/jd/css/template.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'moties/css/paginator.css' %}">
-    <script src="{% static 'moties/js/jquery-1.9.1.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'hellios/css/paginator.css' %}">
+    <script src="{% static 'hellios/js/jquery-1.9.1.min.js' %}"></script>
     <style>
       .container { width: 605px; margin: 30px auto; }
       .pol_motie { background: #ebebeb; padding: 10px; font-size: 12px; line-height: 16px; }
@@ -31,13 +31,13 @@
   <body>
     <div class="container">
       <div id="homeDiv">
-      {% block logo %}<a href="{% url 'moties:home' %}"><img src="{% static 'moties/images/jdpolitiek-logo.png' %}" border="0" /></a>{% endblock %}
+      {% block logo %}<a href="{% url 'hellios:home' %}"><img src="{% static 'hellios/images/jdpolitiek-logo.png' %}" border="0" /></a>{% endblock %}
 {% block topmenu %}
 <div id="menu_div">
 <ul class="menu">
-<li><a href="{% url 'moties:home' %}">JD Visie Home</a></li>
-<li><a href="{% url 'moties:default_hoofdstuk' 1%}">Politiek Programma</a></li>
-<li><a href="{% url 'moties:motie-list' %}">Politieke Moties</a></li>
+<li><a href="{% url 'hellios:home' %}">JD Visie Home</a></li>
+<li><a href="{% url 'hellios:default_hoofdstuk' 1%}">Politiek Programma</a></li>
+<li><a href="{% url 'hellios:motie-list' %}">Politieke Moties</a></li>
 <li><a href="http://www.jd.nl" target="_blank">www.jd.nl</a></li>
 </ul>
 </div>

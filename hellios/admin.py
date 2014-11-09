@@ -1,5 +1,5 @@
 from django.contrib import admin
-from moties.models import *
+from hellios.models import *
 
 class TagInline(admin.TabularInline):
     model = Motie.tags.through

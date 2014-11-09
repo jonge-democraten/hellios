@@ -3,7 +3,7 @@ from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 from django.utils.html import conditional_escape
 from django.core.urlresolvers import reverse
-from moties.models import Motie
+from hellios.models import Motie
 import re
 
 register = template.Library()
@@ -118,7 +118,7 @@ def get_hoofdstuk_link(hoofdstuk, base_url=None):
         base_url = reverse(base_url)
         return mark_safe(r'<a href="%s#%s">%s. %s</a>' % (base_url,nr,nr,title,))
     else:
-        url = reverse('moties:default_hoofdstuk', kwargs={'hoofdstuk': nr,})
+        url = reverse('hellios:default_hoofdstuk', kwargs={'hoofdstuk': nr,})
         return mark_safe(r'<a href="%s">%s. %s</a>' % (url,nr,title,))
 
 @register.assignment_tag(name='hoofdstuk_active')

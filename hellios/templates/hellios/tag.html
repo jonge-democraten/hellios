@@ -1,0 +1,10 @@
+{% extends 'hellios/list.html' %}
+{% block title %}Categorie '{{ tag }}' - Politieke Moties - JD Visie{% endblock %}
+{% block list-header %}<h1><a href="{% url 'hellios:tag' tag=tag %}">Moties met de tag '{{ tag }}'</a></h1>{% endblock %}
+{% block links-bottom %}
+  <p>
+    <strong>&raquo; <a href="{% url 'hellios:motie-list' %}">Bekijk alle moties</a></strong><br />
+    <strong>&raquo; <a href="{% url 'hellios:tag-list' %}">Bekijk alle tags</a></strong><br />
+    <strong>&raquo; <a href="{% url 'hellios:home' %}">Ga terug naar de politieke site</a></strong>
+  </p>
+{% endblock %}
