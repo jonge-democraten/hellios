@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
@@ -69,7 +72,15 @@ def get_standpunt_tekst(text, autoescape=True):
     result = "".join([p for p in pieces])
     return mark_safe(result)
 
-def render_programma_iter(pieces):
+def to_unicode_sup(number):
+    res = ""
+    while number > 0:
+        res = u"⁰¹²³⁴⁵⁶⁷⁸⁹"[number % 10] + res
+        number /= 10
+    return res
+
+def render_programma_iter(pieces, numbers=False):
+    i = 1
     for (lvl,idx,sup,title,pieces) in pieces:
         if title != None: title = conditional_escape(title)
         if idx != None:
@@ -81,11 +92,30 @@ def render_programma_iter(pieces):
                 yield "<div class=\"header-%d\"><a href=\"#%s\"><span class=\"nummering\">%s.&nbsp;</span>%s</a></div>\n" % (lvl, anchor, idx, title,)
         for line in pieces:
             line = conditional_escape(line)
+
+            if numbers:
+                # Convert newline to break newline
+                line = re.sub("\n", "<br />\n", line)
+                # Convert "dot space capital" to "dot newline capital"
+                line = re.sub("\. ([A-Z])", ".\n\\1", line)
+                newline = ""
+                for s in re.split("\n", line):
+                    if s.strip() != "":
+                        newline += "<span class=\"v\">" + to_unicode_sup(i) + "</span>&nbsp;" + s + " "
+                        # newline += u"<sup><span class=\"v\">{:d} </span></sup>".format(i) + s + " "
+                        i += 1
+                line = newline
+
             yield render_tekst(line, "level-%d" % lvl)
 
 @register.simple_tag(name='render_programma')
 def render_programma(programma):
-    return mark_safe(("".join([s for s in render_programma_iter(programma.parse_programma())])))
+    result = ""
+    pieces = programma.parse_programma()
+    for h, title in programma.hoofdstukken_iter():
+        hpieces = select_hoofdstuk(pieces, h)
+        result += "".join([s for s in render_programma_iter(hpieces, True)])
+    return mark_safe(result)
 
 def select_hoofdstuk(pieces, hoofdstuk):
     good = False
