@@ -13,10 +13,11 @@ TEMPLATE_DEBUG = False
 # in this list.
 ALLOWED_HOSTS = []
 
-# Step 3: when deploying in production, set STATIC_ROOT to the actual location
-# of the site's static files.
-# Do not set this value when runnig for development (i.e. manage.py runserver).
+# Step 3: when deploying in production, set STATIC_ROOT and MEDIA_ROOT to the
+# actual location of the site's static and media files.
+# Do not set these values when runnig for development (i.e. manage.py runserver).
 # STATIC_ROOT = '/usr/share/jonge-democraten/visie/static/'
+# MEDIA_ROOT = '/usr/share/jonge-democraten/visie/media/'
 
 # Step 4: set a database to store the application's information
 # For development, SQLite is fine. For production, use MySQL.
