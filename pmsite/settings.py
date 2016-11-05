@@ -4,15 +4,6 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-# SECURITY WARNING: Make this unique, and don't share it with anybody.
-SECRET_KEY = ''
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -41,19 +32,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'pmsite.urls'
 WSGI_APPLICATION = 'pmsite.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'db.sqlite3',                   # Or path to database file if using sqlite3.
-        'USER': '',                             # Not used with sqlite3.
-        'PASSWORD': '',                         # Not used with sqlite3.
-        'HOST': '',                             # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                             # Set to empty string for default. Not used with sqlite3.
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -63,13 +41,8 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Absolute path and url to directory / url that holds static files
-STATIC_ROOT = ''
-STATIC_URL = ''
-
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-MEDIA_ROOT = ''
-MEDIA_URL = ''
+# Absolute path to directory / url that holds static files
+STATIC_URL = '/static/'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -100,10 +73,17 @@ LOGGING = {
     }
 }
 
-# JANEUS_SERVER = "ldap://127.0.0.1:389/"
-# JANEUS_DN = "cn=readuser,ou=sysUsers,dc=jd,dc=nl"
-# JANEUS_PASS = ""
-# JANEUS_AUTH = lambda user,groups: "role-team-ict" in groups or "role-bestuur-landelijk" in groups
-# from django.db.models import Q
-# JANEUS_AUTH_PERMISSIONS = lambda user,groups: Q(content_type__app_label='hellios')
-# AUTHENTICATION_BACKENDS = ('janeus.backend.JaneusBackend', 'django.contrib.auth.backends.ModelBackend',)
+##################
+# LOCAL SETTINGS #
+##################
+
+# Allow any settings to be defined in local_settings.py which should be
+# ignored in your version control system allowing for settings to be
+# defined per machine.
+try:
+    from .local_settings import *
+except SystemError as e:  # relative imports do not work when using `manage.py runserver`: (Parent module '' not loaded, cannot perform relative import)
+    from local_settings import *
+except ImportError as e:
+    if "local_settings" not in str(e):
+        raise e
