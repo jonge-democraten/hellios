@@ -6,7 +6,7 @@ The application is a custom CMS for presenting the political programme and the a
 #### Quick install
 
 1. `$ ./clean_env.sh`
-1. `$ ./build_end.sh`
+1. `$ ./build_env.sh`
 1. `$ source ./env/bin/activate`
 1. `$ cp pmsite/local_settings_example.py pmsite/local_settings.py`
 1. Edit `local_settings.py` to reflect your local setup. Instructions are in the comments.
