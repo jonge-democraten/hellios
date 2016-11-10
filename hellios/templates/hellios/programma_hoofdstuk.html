@@ -1,0 +1,84 @@
+{% extends 'hellios/base.html' %}
+{% load staticfiles hellios_extra %}
+
+{% block importedstyles %}
+{{ block.super }}
+{% endblock %}
+
+{% block head %}
+<script>
+$(function() {
+    function copyText()
+    {
+        // obtain selection object and selected text
+        var selection = window.getSelection();
+        var selContent = selection.getRangeAt(0).cloneContents();
+
+        // clone selected content to a temporary div
+        var div = $('<div>', {style: "position: absolute; left: -99999px", html: selContent});
+        $('body').append(div);
+        // window.setTimeout(function(){$(div).remove();}, 0);
+
+        // modify the div
+        $(div).find('sup').remove();
+
+        // select the contents of the div
+        var range = document.createRange();
+        range.selectNodeContents(div[0]);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+    }
+    document.oncopy = copyText;
+});
+</script>
+<style>
+@page { size: A4; margin: 30mm 20mm 30mm 20mm; }
+@page {
+    @bottom-left { content: "Test"  counter(chapternum); }
+}
+@media print {
+    html, body { width: 170mm; height: 247mm; }
+    #homeDiv > img:first-child { display: block; text-align: center; margin: 0 auto; }
+    .header-1:before { counter-increment: chapternum; }
+}
+.header-1 { page-break-before: always; }
+.header-1, .header-2, .header-3, .header-4, .header-5 { page-break-after: avoid;}
+.header-1 + p, .header-2 + p, .header-3 + p, .header-4 + p, .header-5 + p { page-break-before: avoid;}
+.header-1, .header-2 { margin: 1em 0 0.4em 0; }
+.header-3, .header-4, .header-5 { margin: 1em 0 0 0; }
+
+body, #homeDiv p { font-size: 12px; }
+#homeDiv p, #homeDiv ul { margin: 0 0 0.7em 0; line-height: 1.5em; text-align: justify; }
+#homeDiv p.level-1 { font-style: italic; }
+#homeDiv ul { line-height: 1em; margin: -0.7em 0 0 0; padding: 0 0 0 20px; }
+
+.header-1 { font-size: 160%; font-weight: bold; width: 100%; border-bottom: 2px solid #000; padding-bottom: 6px;}
+.header-2 { font-size: 140%; line-height: 1.5em; font-weight: bold; }
+.header-3 { font-size: 110%; line-height: 1.5em; font-weight: bold; }
+.header-4 { font-size: 110%; text-decoration: underline; }
+.header-5 { font-size: 100%; }
+.header-4 .nummering, .header-5 .nummering { display: none; }
+
+span.v { color: #990000; line-height: normal; font-family: Lucida Sans Unicode, Arial Unicode MS; font-style: normal; }
+</style>
+{% endblock %}
+
+{% block logo %}
+<img src="{% static 'hellios/images/jdpolitiek-logo.png' %}" border="0" />
+{% endblock %}
+
+{# Page specific title #}
+{% block title %}
+Politiek Programma - JD Visie
+{% endblock %}
+
+{# Top Menu #}
+{% block topmenu %}
+{% endblock %}
+
+{# Content #}
+{% block content %} 
+{% render_programma programma %}
+
+{% endblock %}
