@@ -107,9 +107,16 @@ def render_programma_iter(pieces, numbers=False, links=True):
                 line = re.sub("\. ([A-Z])", ".\n\\1", line)
                 newline = ""
                 for s in re.split("\n", line):
-                    if s.strip() != "":
-                        newline += "<span class=\"v\">" + to_unicode_sup(i) + "</span>&nbsp;" + s + " "
-                        # newline += u"<sup><span class=\"v\">{:d} </span></sup>".format(i) + s + " "
+                    s = s.strip()
+                    if s == "[ul]" or s == "[ol]" or s == "[/ul]" or s == "[/ol]":
+                        newline += s
+                    elif s.startswith("[li]"):
+                        newline += u"[li]"
+                        newline += u"<sup><span class=\"v\">{:d}&nbsp;</span></sup>".format(i) + s[4:] + " "
+                        i += 1
+                    elif s != "":
+                        # newline += "<span class=\"v\">" + to_unicode_sup(i) + "&nbsp;</span>" + s + " "
+                        newline += u"<sup><span class=\"v\">{:d}&nbsp;</span></sup>".format(i) + s + " "
                         i += 1
                 line = newline
 
