@@ -4,8 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <title>{% block title %}Visie Jonge Democraten{% endblock %}</title>
+    {% block importedstyles %}
     <link rel="stylesheet" type="text/css" href="https://jongedemocraten.nl/templates/jd/css/template.css">
     <link rel="stylesheet" type="text/css" href="{% static 'hellios/css/paginator.css' %}">
+    {% endblock %}
     <script src="{% static 'hellios/js/jquery-1.9.1.min.js' %}"></script>
     <style>
       .container { width: 605px; margin: 30px auto; }
