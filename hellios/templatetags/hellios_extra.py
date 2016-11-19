@@ -79,17 +79,24 @@ def to_unicode_sup(number):
         number /= 10
     return res
 
-def render_programma_iter(pieces, numbers=False):
+def render_programma_iter(pieces, numbers=False, links=True):
     i = 1
     for (lvl,idx,sup,title,pieces) in pieces:
         if title != None: title = conditional_escape(title)
         if idx != None:
             anchor = "_".join([z for z in idx.split(".")])
-            yield "<a name=\"%s\"></a>" % (anchor,)
+            if links:
+                yield "<a name=\"%s\"></a>" % (anchor,)
             if sup:
-                yield "<div class=\"header-%d\"><a href=\"#%s\">%s</a></div>\n" % (lvl, anchor, title,)
+                if links:
+                    yield "<div class=\"header-%d\"><a href=\"#%s\">%s</a></div>\n" % (lvl, anchor, title,)
+                else:
+                    yield "<div class=\"header-%d\">%s</div>\n" % (lvl, title,)
             else:
-                yield "<div class=\"header-%d\"><a href=\"#%s\"><span class=\"nummering\">%s.&nbsp;</span>%s</a></div>\n" % (lvl, anchor, idx, title,)
+                if links:
+                    yield "<div class=\"header-%d\"><a href=\"#%s\"><span class=\"nummering\">%s.&nbsp;</span>%s</a></div>\n" % (lvl, anchor, idx, title,)
+                else:
+                    yield "<div class=\"header-%d\"><span class=\"nummering\">%s.&nbsp;</span>%s</div>\n" % (lvl, idx, title,)
         for line in pieces:
             line = conditional_escape(line)
 
@@ -100,9 +107,16 @@ def render_programma_iter(pieces, numbers=False):
                 line = re.sub("\. ([A-Z])", ".\n\\1", line)
                 newline = ""
                 for s in re.split("\n", line):
-                    if s.strip() != "":
-                        newline += "<span class=\"v\">" + to_unicode_sup(i) + "</span>&nbsp;" + s + " "
-                        # newline += u"<sup><span class=\"v\">{:d} </span></sup>".format(i) + s + " "
+                    s = s.strip()
+                    if s == "[ul]" or s == "[ol]" or s == "[/ul]" or s == "[/ol]":
+                        newline += s
+                    elif s.startswith("[li]"):
+                        newline += u"[li]"
+                        newline += u"<sup><span class=\"v\">{:d}&nbsp;</span></sup>".format(i) + s[4:] + " "
+                        i += 1
+                    elif s != "":
+                        # newline += "<span class=\"v\">" + to_unicode_sup(i) + "&nbsp;</span>" + s + " "
+                        newline += u"<sup><span class=\"v\">{:d}&nbsp;</span></sup>".format(i) + s + " "
                         i += 1
                 line = newline
 
@@ -114,7 +128,7 @@ def render_programma(programma):
     pieces = programma.parse_programma()
     for h, title in programma.hoofdstukken_iter():
         hpieces = select_hoofdstuk(pieces, h)
-        result += "".join([s for s in render_programma_iter(hpieces, True)])
+        result += "".join([s for s in render_programma_iter(hpieces, True, False)])
     return mark_safe(result)
 
 def select_hoofdstuk(pieces, hoofdstuk):
@@ -131,7 +145,7 @@ def select_hoofdstuk(pieces, hoofdstuk):
 def render_programma_hoofdstuk(programma, hoofdstuk):
     pieces = programma.parse_programma()
     pieces = select_hoofdstuk(pieces, hoofdstuk)
-    return mark_safe("".join([s for s in render_programma_iter(pieces)]))
+    return mark_safe("".join([s for s in render_programma_iter(pieces, True, True)]))
 
 @register.simple_tag(name='hoofdstuk_titel')
 def get_hoofdstuk_titel(hoofdstuk, programma):

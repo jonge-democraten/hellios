@@ -223,4 +223,4 @@ def view_default_programma(request):
 
 def view_default_programma_hoofdstuk(request, hoofdstuk, *args, **kwargs):
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
-    return render_to_response('hellios/programma.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
+    return render_to_response('hellios/programma_hoofdstuk.html', {'programma': programma, 'hoofdstuk': hoofdstuk})

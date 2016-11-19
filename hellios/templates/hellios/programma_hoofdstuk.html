@@ -1,0 +1,96 @@
+{% extends 'hellios/base.html' %}
+{% load hellios_extra %}
+
+{% block head %}
+<script>
+$(function() {
+    function copyText()
+    {
+        // obtain selection object and selected text
+        var selection = window.getSelection();
+        var selContent = selection.getRangeAt(0).cloneContents();
+
+        // clone selected content to a temporary div
+        var div = $('<div>', {style: "position: absolute; left: -99999px", html: selContent});
+        $('body').append(div);
+        // window.setTimeout(function(){$(div).remove();}, 0);
+
+        // modify the div
+        $(div).find('sup').remove();
+
+        // select the contents of the div
+        var range = document.createRange();
+        range.selectNodeContents(div[0]);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+    }
+    document.oncopy = copyText;
+});
+</script>
+<style>
+.header-1 { page-break-before: always; }
+.header-2, .header-3, .header-4, .header-5 { page-break-before: avoid; }
+.header-1 + p, .header-2 + p, .header-3 + p, .header-4 + p, .header-5 + p { page-break-before: avoid;}
+.header-1, .header-2, .header-3, .header-4, .header-5 { margin-top: 20px; break-after: avoid-page; page-break-after: avoid; }
+.header-1 { font-size: 24px; font-weight: bold; width: 100%; border-bottom: 2px solid #000; padding-bottom: 6px;}
+.header-1 a { color: #000; }
+.header-2 a { background: url('https://jongedemocraten.nl/templates/jd/images/TitleBackground.png') repeat-x #578439; color: #fff; font-size: 18px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; vertical-align: middle; margin-top: 40px; }
+.header-3 a { background: #ddd; color: #222; font-size: 16px; line-height: 20px; font-weight: bold; display: inline; padding: 2px 10px 2px 10px; vertical-align: middle; margin-top: 40px; }
+.header-3 { font-weight: bold; }
+.header-4 a { color: #000; font-weight: bold; font-size: 14px; text-decoration: underline; }
+.header-5 a { color: #000; font-weight: bold; font-size: 12px; }
+.header-1 a:hover, .header-2 a:hover, .header-3 a:hover, .header-5 a:hover { text-decoration: none; }
+.header-4 span.nummering, .header-5 span.nummering { display: none; }
+ul { margin-bottom: 0px; }
+p.level-1, p.level-2, p.level-3, p.level-4, p.level-5 { margin-top: 10px; margin-bottom: 0px; line-height: 18px; text-align: justify; } 
+ul.level-1, ul.level-2, ul.level-3, ul.level-4, ul.level-5 { line-height: 18px; text-align: justify; }
+p.level-1, ul.level-1 { font-style: italic; }
+.hoofdstuk_link { display: inline-block; padding: 4px 8px 4px 0px; }
+.hoofdstuk_link a { background: #ddd; border-radius: 3px; color: #000; padding: 4px 6px; line-height: 28px; }
+.hoofdstuk_link a:hover, .hoofdstuk_link.active a { text-decoration: none; color: #fff; background: #333; }
+span.v { color: #990000; line-height: normal; font-family: Lucida Sans Unicode, Arial Unicode MS; font-style: normal; }
+</style>
+{% endblock %}
+
+{# Page specific title #}
+{% block title %}
+{% if hoofdstuk %}
+{% hoofdstuk_titel hoofdstuk programma%} - Politiek Programma - JD Visie
+{% else %}
+Politiek Programma - JD Visie
+{% endif %}
+{% endblock %}
+
+{# Top Menu #}
+{% block topmenu %}
+{% if hoofdstuk %}
+{{ block.super }}
+{% endif %}
+{% endblock %}
+
+{# Content #}
+{% block content %} 
+
+{% if hoofdstuk %}
+{# Create menu #}
+{% for h in programma.hoofdstukken_iter %}
+{% hoofdstuk_active h hoofdstuk as isactive %}
+{% if isactive %}
+<div class='hoofdstuk_link active'>{% hoofdstuk_link h %}</div>
+{% else %}
+<div class='hoofdstuk_link'>{% hoofdstuk_link h %}</div>
+{% endif %}
+{% endfor %}
+<p>&nbsp;</p>
+{% render_programma_hoofdstuk programma hoofdstuk %}
+
+<p>
+  <strong>&raquo; <a href="{% url 'hellios:home' %}">Ga terug naar de politieke site</a></strong>
+</p>
+
+{% else %}
+{% render_programma programma %}
+{% endif %}
+
+{% endblock %}
