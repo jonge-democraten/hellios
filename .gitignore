@@ -1,5 +1,6 @@
 *.pyc
 sq.db
+db.sqlite3
 local_settings.py
 
 .idea/
