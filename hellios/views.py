@@ -1,5 +1,3 @@
-from django.core.paginator import Paginator
-from django.core.urlresolvers import reverse
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template.context import RequestContext
@@ -203,7 +201,7 @@ class TagListView(ListView):
 
 def view_home(request):
     tags = Tag.objects.annotate(num_moties=Count('motie')).filter(num_moties__gt=0).order_by('-num_moties')[:25]
-    letters = [chr(i) for i in xrange(ord('A'), ord('Z')+1)]
+    letters = [chr(i) for i in range(ord('A'), ord('Z')+1)]
     used = [item['letter'] for item in Standpunt.objects.values('letter').annotate(count=Count('letter')).filter(count__gt=0)]
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[:1]
     resultatenboeken = Resultatenboek.objects.order_by('-title')
