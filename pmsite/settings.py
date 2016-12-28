@@ -28,6 +28,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'janeus.utils.CurrentRequestMiddleware',
 )
 
 ROOT_URLCONF = 'pmsite.urls'
@@ -76,6 +77,12 @@ LOGGING = {
         },
     }
 }
+
+
+# Configure the Sites framework. Currently Hellios does not have full fledges support for multiple sites,
+# but Janeus requires a Site now.
+SITE_ID = 1
+JANEUS_CURRENT_SITE = 1
 
 ##################
 # LOCAL SETTINGS #

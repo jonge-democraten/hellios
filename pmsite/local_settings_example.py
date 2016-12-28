@@ -40,4 +40,3 @@ DATABASES = {
 # from django.db.models import Q
 # JANEUS_AUTH_PERMISSIONS = lambda user,groups: Q(content_type__app_label='hellios')
 # AUTHENTICATION_BACKENDS = ('janeus.backend.JaneusBackend', 'django.contrib.auth.backends.ModelBackend',)
-
