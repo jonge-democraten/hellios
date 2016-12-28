@@ -82,7 +82,6 @@ LOGGING = {
 # Configure the Sites framework. Currently Hellios does not have full fledges support for multiple sites,
 # but Janeus requires a Site now.
 SITE_ID = 1
-JANEUS_CURRENT_SITE = 1
 
 ##################
 # LOCAL SETTINGS #
