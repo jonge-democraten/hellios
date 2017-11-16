@@ -18,14 +18,14 @@ class Standpunt(Model):
             self.letter = self.naam[0].upper()
         super(Standpunt, self).save(*args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.naam
 
 class Tag(Model):
     kort = CharField(db_index=True, max_length=40, primary_key=True, verbose_name='Tag')
     lang = CharField(max_length=250, verbose_name='Beschrijving', blank=True, help_text="Optionele beschrijving voor de admin")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.kort
 
 class Programma(Model):
@@ -41,7 +41,7 @@ class Programma(Model):
     class Meta:
         verbose_name_plural = 'programma\'s'
 
-    def __unicode__(self):
+    def __str__(self):
         return "Programma van " + str(self.datum)
 
     def parse_programma(self):
@@ -123,7 +123,7 @@ class Congres(Model):
         ordering = ('datum',)
         verbose_name_plural = 'congressen'
 
-    def __unicode__(self):
+    def __str__(self):
         return "Congres %s" % self.naam
 
     def save(self, *args, **kwargs):
@@ -170,7 +170,7 @@ class Motie(Model):
         ordering = ('datum',)
         verbose_name_plural = 'politieke moties'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.titel
 
     def save(self, *args, **kwargs):
@@ -196,7 +196,7 @@ class Comment(Model):
     email = CharField(max_length=250, blank=True)
     motie = ForeignKey(Motie, related_name="comments")
 
-    def __unicode__(self):
+    def __str__(self):
         return "Comment van %s" % (self.auteur,)
 
 class Resultatenboek(Model):
@@ -206,5 +206,5 @@ class Resultatenboek(Model):
     class Meta:
         verbose_name_plural = 'resultatenboeken'
 
-    def __unicode__(self):
+    def __str__(self):
         return "Resultatenboek %s" % (self.title,)
