@@ -1,6 +1,5 @@
 Hellios
 ====
-[![Dependency Status](https://gemnasium.com/jonge-democraten/hellios.svg)](https://gemnasium.com/jonge-democraten/hellios)
 
 Hellios is a Django-based web application developed for the Jonge Democraten.
 The application is a custom CMS for presenting the political programme and the accepted proposals of the Jonge Democraten.
