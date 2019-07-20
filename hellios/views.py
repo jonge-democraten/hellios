@@ -1,5 +1,5 @@
 from django.db.models import Count
-from django.shortcuts import get_object_or_404, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template.context import RequestContext
 from django.views.generic import DetailView, ListView, FormView, View
 from django.views.generic.detail import SingleObjectMixin
@@ -166,7 +166,7 @@ class MotieListView(FilterMixin, ListView):
 
     def get_queryset(self):
         qs = super(MotieListView, self).get_queryset()
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             qs = qs.exclude(status__exact=Motie.INGEDIEND)
         if "order" in self.request.GET:
             if self.request.GET['order'] in self.allowed_sorts:
@@ -209,16 +209,16 @@ def view_home(request):
     else: programma = programma[0]
     #letters = [(letter, (letter in counts and (True,) or (False,))[0]) for letter in letters]
     #letters = [(letter, 1) for letter in letters]
-    return render_to_response("hellios/home.html", context_instance=RequestContext(request, {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken}))
+    return render(request, 'hellios/home.html', {'tags': tags, 'letters': letters, 'used': used, 'programma': programma, 'resultatenboeken': resultatenboeken})
 
 def view_standpunten(request, letter, *args, **kwargs):
     standpunten = Standpunt.objects.filter(letter__exact=letter)
-    return render_to_response('hellios/standpunten.html', {'letter': letter, 'standpunten': standpunten, 'request': request})
+    return render(request, 'hellios/standpunten.html', {'letter': letter, 'standpunten': standpunten})
 
 def view_default_programma(request):
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
-    return render_to_response('hellios/programma.html', {'programma': programma})
+    return render(request, 'hellios/programma.html', {'programma': programma})
 
 def view_default_programma_hoofdstuk(request, hoofdstuk, *args, **kwargs):
     programma = Programma.objects.filter(zichtbaar=True).order_by('-datum')[0]
-    return render_to_response('hellios/programma_hoofdstuk.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
+    return render(request, 'hellios/programma_hoofdstuk.html', {'programma': programma, 'hoofdstuk': hoofdstuk})
