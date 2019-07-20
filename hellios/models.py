@@ -117,7 +117,7 @@ class Congres(Model):
     inleiding = CharField(max_length=250, verbose_name='Inleiding van motie', help_text='Bijvoorbeeld: De ALV van de JD, bijeen te <plaats> op <datum>,')
     notulen = CharField(max_length=250, blank=True, verbose_name='Link naar notulen', help_text='Gebruik een volledig adres, inclusief http://')
     kort = CharField(max_length=250, verbose_name='Afkorting in motielijsten', unique=True, help_text='Bijvoorbeeld: ALV 99')
-    tag = ForeignKey(Tag, null=True, verbose_name="Congrestag")
+    tag = ForeignKey(Tag, null=False, verbose_name="Congrestag", on_delete=PROTECT)
 
     class Meta:
         ordering = ('datum',)
